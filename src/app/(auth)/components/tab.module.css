@@ -1,0 +1,11 @@
+.tab {
+    @apply w-full px-4 py-3 rounded bg-primaryCol text-center text-lg font-medium duration-300
+}
+
+.activeTab {
+    @apply bg-primaryCol text-white hover:bg-primaryCol/90 hover:text-white
+}
+
+.otherTab {
+    @apply bg-white text-black hover:text-white hover:bg-primaryCol
+}
