@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
+import ReduxProvider from "@/providers/ReduxProvider";
 
 const kanit = Kanit({ weight: ["400", "500", "600", "800"], subsets: ["latin"] })
 
@@ -16,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${kanit.className} bg-bgCol`}>{children}</body>
+      <ReduxProvider>
+        <body className={`${kanit.className} bg-bgCol`}>{children}</body>
+      </ReduxProvider>
     </html>
   );
 }
