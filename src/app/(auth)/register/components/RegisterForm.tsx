@@ -1,10 +1,10 @@
 "use client"
-import React, { useState } from 'react';
 import Button from '@/components/shared/Button/Button';
 import InputWithLabel from '@/components/shared/Input/InputWithLabel';
+import React, { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 
-const LoginForm = () => {
+const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
 
 
@@ -17,6 +17,7 @@ const LoginForm = () => {
     }
     return (
         <form action="" onSubmit={handleSubmit} className='space-y-4'>
+            <InputWithLabel name='name' placeholder='Name' id='name' />
             <InputWithLabel name='email' placeholder='Email' id='email' />
             <InputWithLabel name='password' placeholder='Password' id='password' />
             <Button variant={"primaryReverse"} className='w-full' onClick={() => setLoading(pre => !pre)}>
@@ -24,11 +25,11 @@ const LoginForm = () => {
                     loading ?
                         <FaSpinner className='text-2xl py-0.5 animate-spin' />
                         :
-                        "Login"
+                        "Register"
                 }
             </Button>
         </form>
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
