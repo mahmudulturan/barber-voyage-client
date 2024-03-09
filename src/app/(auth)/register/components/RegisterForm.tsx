@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
 
-type RegisterInputs = {
+export type RegisterInputs = {
     name: string;
     email: string;
     password: string;
