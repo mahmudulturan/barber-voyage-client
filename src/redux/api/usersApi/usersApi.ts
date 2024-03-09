@@ -1,5 +1,5 @@
 import { RegisterInputs } from "@/app/(auth)/register/components/RegisterForm";
-import baseApi from "../api/baseApi";
+import baseApi from "../baseApi";
 
 const usersApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
