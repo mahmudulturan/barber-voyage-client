@@ -3,7 +3,7 @@ import baseApi from "../baseApi";
 
 const usersApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        registerUser: builder.mutation<RegisterInputs, string>({
+        registerUser: builder.mutation<RegisterInputs, object>({
             query: (data) => ({
                 url: '/api/v1/auth/register',
                 method: "POST",

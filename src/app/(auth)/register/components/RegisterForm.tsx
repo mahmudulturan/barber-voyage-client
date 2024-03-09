@@ -1,8 +1,10 @@
 "use client"
 import Button from '@/components/shared/Button/Button';
 import InputWithLabel from '@/components/shared/Input/InputWithLabel';
+import { useRegisterUserMutation } from '@/redux/api/usersApi/usersApi';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
 
 export type RegisterInputs = {
@@ -15,15 +17,25 @@ const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterInputs>()
+    const [registerUser, { data, isLoading, isError, isSuccess }] = useRegisterUserMutation();
 
     // handle for login user
-    const onSubmit: SubmitHandler<RegisterInputs> = (data) => {
+    const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
         const name = data.name;
         const email = data.email;
         const password = data.password;
         const userInfo = { name, email, password };
-        console.log(userInfo);
-        setLoading(pre => !pre)
+
+        try {
+            toast.loading('Registering...');
+            const dbResponse = await registerUser(userInfo).unwrap();
+            toast.success("Registered");
+
+            console.log('dbResponse', isLoading);
+            console.log('dbResponse', dbResponse);
+        } catch (error) {
+
+        }
     }
 
 
