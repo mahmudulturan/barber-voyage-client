@@ -16,6 +16,8 @@ const Navbar = () => {
 
     const dispatch = useDispatch();
 
+    console.log(user);
+
     // handler for logout user
     const handleLogout = () => {
         const dbResponse = logoutUser(undefined).unwrap();
