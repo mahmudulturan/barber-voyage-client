@@ -2,6 +2,7 @@
 import Button from '@/components/shared/Button/Button';
 import InputWithLabel from '@/components/shared/Input/InputWithLabel';
 import { useRegisterUserMutation } from '@/redux/api/usersApi/usersApi';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -17,8 +18,10 @@ export type RegisterInputs = {
 const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterInputs>()
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<RegisterInputs>()
     const [registerUser, { isLoading: isRegistering }] = useRegisterUserMutation();
+
+    const router = useRouter();
 
     // handle for login user
     const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
@@ -33,7 +36,11 @@ const RegisterForm = () => {
             dbResponsePromise,
             {
                 loading: 'Registering...',
-                success: (data) => `${data.message}`,
+                success: (data) => {
+                    router.push('/login')
+                    reset();
+                    return `${data.message}`
+                },
                 error: (err) => `${err?.data?.error || "Registration Failed"}`,
             }
         );
@@ -60,7 +67,7 @@ const RegisterForm = () => {
             {/* password input field */}
             <div className='relative'>
                 <InputWithLabel
-                    {...register("password", { required: true })}
+                    {...register("password", { required: true, minLength: 6, maxLength: 32, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/ })}
                     autoComplete="current-password"
                     name='password' placeholder='Password' id='password' type={showPassword ? "text" : "password"} />
 
@@ -72,7 +79,10 @@ const RegisterForm = () => {
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
             </div>
-            {errors.password && <span className='text-red-400'>Password is required!</span>}
+            {errors.password?.type === "required" && <span className='text-red-400'>Password is required!</span>}
+            {errors.password?.type === "minLength" && <span className='text-red-400'>Password must be at least 6 characters long.</span>}
+            {errors.password?.type === "maxLength" && <span className='text-red-400'>Password cannot exceed 32 characters.</span>}
+            {errors.password?.type === "pattern" && <span className='text-red-400'>Use a strong password.</span>}
 
             {/* register button */}
             <Button variant={"primaryReverse"} type='submit' disabled={isRegistering} className='w-full'>
