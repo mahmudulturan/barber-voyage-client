@@ -20,14 +20,14 @@ export default function RootLayout({
   return (
     <>
       <html lang="en">
-        <ReduxProvider>
-          <AuthProvider>
-            <body className={`${kanit.className} bg-bgCol`}>
+        <body className={`${kanit.className} bg-bgCol`}>
+          <ReduxProvider>
+            <AuthProvider>
               <Toaster />
               {children}
-            </body>
-          </AuthProvider>
-        </ReduxProvider>
+            </AuthProvider>
+          </ReduxProvider>
+        </body>
       </html>
     </>
   );

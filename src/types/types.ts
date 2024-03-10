@@ -20,6 +20,7 @@ export type User = {
 }
 
 export type userSliceState = {
-    isAuthenticate: boolean
-    user: User | null
+    isAuthenticate: boolean;
+    isAuthLoading: boolean;
+    user: User | null;
 }
