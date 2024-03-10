@@ -1,29 +1,44 @@
 "use client"
 import Button from '@/components/shared/Button/Button';
 import InputWithLabel from '@/components/shared/Input/InputWithLabel';
+import { useRegisterUserMutation } from '@/redux/api/usersApi/usersApi';
+import { RegisterInputs } from '@/types/types';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
+import toast from 'react-hot-toast';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-type RegisterInputs = {
-    name: string;
-    email: string;
-    password: string;
-}
+
 
 const RegisterForm = () => {
-    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterInputs>()
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<RegisterInputs>()
+    const [registerUser, { isLoading: isRegistering }] = useRegisterUserMutation();
+
+    const router = useRouter();
 
     // handle for login user
-    const onSubmit: SubmitHandler<RegisterInputs> = (data) => {
+    const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
         const name = data.name;
         const email = data.email;
         const password = data.password;
         const userInfo = { name, email, password };
-        console.log(userInfo);
-        setLoading(pre => !pre)
+
+        // registering user with userInfo
+        const dbResponsePromise = registerUser(userInfo).unwrap();
+        toast.promise(
+            dbResponsePromise,
+            {
+                loading: 'Registering...',
+                success: (data: { message: string }) => {
+                    router.push('/login')
+                    reset();
+                    return `${data.message}`
+                },
+                error: (err) => `${err?.data?.error || "Registration Failed"}`,
+            }
+        );
     }
 
 
@@ -47,7 +62,7 @@ const RegisterForm = () => {
             {/* password input field */}
             <div className='relative'>
                 <InputWithLabel
-                    {...register("password", { required: true })}
+                    {...register("password", { required: true, minLength: 6, maxLength: 32, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/ })}
                     autoComplete="current-password"
                     name='password' placeholder='Password' id='password' type={showPassword ? "text" : "password"} />
 
@@ -59,16 +74,14 @@ const RegisterForm = () => {
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
             </div>
-            {errors.password && <span className='text-red-400'>Password is required!</span>}
+            {errors.password?.type === "required" && <span className='text-red-400'>Password is required!</span>}
+            {errors.password?.type === "minLength" && <span className='text-red-400'>Password must be at least 6 characters long.</span>}
+            {errors.password?.type === "maxLength" && <span className='text-red-400'>Password cannot exceed 32 characters.</span>}
+            {errors.password?.type === "pattern" && <span className='text-red-400'>Use a strong password.</span>}
 
             {/* register button */}
-            <Button variant={"primaryReverse"} className='w-full'>
-                {
-                    loading ?
-                        <FaSpinner className='text-2xl py-0.5 animate-spin' />
-                        :
-                        "Register"
-                }
+            <Button variant={"primaryReverse"} type='submit' disabled={isRegistering} className='w-full'>
+                Register
             </Button>
         </form>
     );
