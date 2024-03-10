@@ -1,5 +1,6 @@
 "use client"
 
+import Loading from "@/components/shared/Loading/Loading";
 import { useCurrentUserQuery } from "@/redux/api/usersApi/usersApi";
 import { saveUser } from "@/redux/slices/usersSlice/usersSlice";
 import React, { useEffect } from "react";
@@ -8,7 +9,6 @@ import { useDispatch } from "react-redux";
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: userData, isLoading: isUserLoading } = useCurrentUserQuery(undefined)
     const dispatch = useDispatch();
-
 
     // for save user after fetching the user from db
     useEffect(() => {
@@ -25,6 +25,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         dispatch(saveUser(payloadObj))
     }, [userData])
+
+    if (isUserLoading) {
+        return <Loading />
+    }
 
     return (
         <>
