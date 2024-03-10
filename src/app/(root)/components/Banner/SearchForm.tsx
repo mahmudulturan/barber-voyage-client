@@ -6,8 +6,8 @@ import { IoLocationSharp } from "react-icons/io5";
 
 const SearchForm = () => {
     return (
-        <div className='max-w-2xl bg-bgCol rounded-md min-h-[70vh] w-full px-10 py-12 mt-5'>
-            <h2 className='text-6xl font-bold uppercase drop-shadow-md'>Find your best <span className='text-primaryCol'>barbers</span> near you!</h2>
+        <div className='max-w-2xl bg-bgCol rounded-md min-h-[70vh] w-full px-2 md:px-10 py-12 my-12 mt-[80px]'>
+            <h2 className='text-3xl md:text-6xl font-bold uppercase drop-shadow-md'>Find your best <span className='text-primaryCol'>barbers</span> near you!</h2>
             <form className='my-6 space-y-6 text-black'>
 
                 {/* location input */}
@@ -17,12 +17,12 @@ const SearchForm = () => {
                 </div>
 
                 {/* min and max price section start */}
-                <div className='flex items-center gap-6 w-full'>
-                    <div className='flex-1'>
+                <div className='flex flex-col sm:flex-row items-center gap-6 w-full'>
+                    <div className='w-full'>
                         <label htmlFor="minPrice" className='font-medium'>Min Price</label>
                         <Input className='py-7 pl-8 text-base mt-2' type='number' placeholder='Min Price' />
                     </div>
-                    <div className='flex-1'>
+                    <div className='w-full'>
                         <label htmlFor="minPrice" className='font-medium'>Max Price</label>
                         <Input className='py-7 pl-8 text-base mt-2' type='number' placeholder='Max Price' />
                     </div>
@@ -30,8 +30,8 @@ const SearchForm = () => {
                 {/* min and max price section end */}
 
                 {/* barber and amenities select section start */}
-                <div className='flex items-center gap-6 w-full'>
-                    <div className='flex-1'>
+                <div className='flex flex-col sm:flex-row items-center gap-6 w-full'>
+                    <div className='w-full'>
                         <label htmlFor="minPrice" className='font-medium'>Barber Type</label>
                         <select
                             className={"flex w-full rounded-md border border-input bg-background px-8 py-3 outline-none pr-10 mt-2"}
@@ -44,7 +44,7 @@ const SearchForm = () => {
                             <option value="Turkish Barber">Turkish Barber</option>
                         </select>
                     </div>
-                    <div className='flex-1'>
+                    <div className='w-full'>
                         <label htmlFor="amenitiese" className='font-medium'>Amenitiese</label>
                         <select
                             className={"flex w-full rounded-md border border-input bg-background px-8 py-3 outline-none pr-10 mt-2"}
