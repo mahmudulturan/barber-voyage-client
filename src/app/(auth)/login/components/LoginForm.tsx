@@ -9,14 +9,9 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { saveUser } from '@/redux/slices/usersSlice/usersSlice';
+import { LoginInputs } from '@/types/types';
 
-export type LoginInputs = {
-    email: string;
-    password: string;
-    message: string;
-    user: {}
-    success: boolean
-}
+
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);

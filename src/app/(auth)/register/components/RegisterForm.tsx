@@ -2,18 +2,14 @@
 import Button from '@/components/shared/Button/Button';
 import InputWithLabel from '@/components/shared/Input/InputWithLabel';
 import { useRegisterUserMutation } from '@/redux/api/usersApi/usersApi';
+import { RegisterInputs } from '@/types/types';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export type RegisterInputs = {
-    message: string;
-    name: string;
-    email: string;
-    password: string;
-}
+
 
 const RegisterForm = () => {
     const [showPassword, setShowPassword] = useState(false);
