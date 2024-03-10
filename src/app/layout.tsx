@@ -3,6 +3,7 @@ import { Kanit } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { Toaster } from "react-hot-toast";
+import AuthProvider from "@/providers/AuthProvider";
 
 const kanit = Kanit({ weight: ["400", "500", "600", "800"], subsets: ["latin"] })
 
@@ -20,10 +21,12 @@ export default function RootLayout({
     <>
       <html lang="en">
         <ReduxProvider>
-          <body className={`${kanit.className} bg-bgCol`}>
-            <Toaster />
-            {children}
-          </body>
+          <AuthProvider>
+            <body className={`${kanit.className} bg-bgCol`}>
+              <Toaster />
+              {children}
+            </body>
+          </AuthProvider>
         </ReduxProvider>
       </html>
     </>

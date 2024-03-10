@@ -15,6 +15,7 @@ export type LoginInputs = {
     password: string;
     message: string;
     user: {}
+    success: boolean
 }
 
 const LoginForm = () => {
@@ -39,7 +40,8 @@ const LoginForm = () => {
             {
                 loading: 'Logging in...',
                 success: (data: LoginInputs) => {
-                    dispatch(saveUser(data.user))
+                    const payloadObj = { isAuthenticate: true, user: data?.user }
+                    dispatch(saveUser(payloadObj))
                     router.push('/')
                     reset();
                     return `${data.message}`
