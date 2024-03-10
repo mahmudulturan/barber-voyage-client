@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
 
 export type RegisterInputs = {
+    message: string;
     name: string;
     email: string;
     password: string;
@@ -17,7 +18,7 @@ const RegisterForm = () => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterInputs>()
-    const [registerUser, { data, isLoading, isError, isSuccess }] = useRegisterUserMutation();
+    const [registerUser, { isLoading: isRegistering }] = useRegisterUserMutation();
 
     // handle for login user
     const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
@@ -26,16 +27,16 @@ const RegisterForm = () => {
         const password = data.password;
         const userInfo = { name, email, password };
 
-        try {
-            toast.loading('Registering...');
-            const dbResponse = await registerUser(userInfo).unwrap();
-            toast.success("Registered");
-
-            console.log('dbResponse', isLoading);
-            console.log('dbResponse', dbResponse);
-        } catch (error) {
-
-        }
+        // registering user with userInfo
+        const dbResponsePromise = registerUser(userInfo).unwrap();
+        toast.promise(
+            dbResponsePromise,
+            {
+                loading: 'Registering...',
+                success: (data) => `${data.message}`,
+                error: (err) => `${err?.data?.error || "Registration Failed"}`,
+            }
+        );
     }
 
 
@@ -74,13 +75,8 @@ const RegisterForm = () => {
             {errors.password && <span className='text-red-400'>Password is required!</span>}
 
             {/* register button */}
-            <Button variant={"primaryReverse"} className='w-full'>
-                {
-                    loading ?
-                        <FaSpinner className='text-2xl py-0.5 animate-spin' />
-                        :
-                        "Register"
-                }
+            <Button variant={"primaryReverse"} type='submit' disabled={isRegistering} className='w-full'>
+                Register
             </Button>
         </form>
     );
