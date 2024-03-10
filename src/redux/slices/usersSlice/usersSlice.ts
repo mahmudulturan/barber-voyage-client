@@ -12,7 +12,8 @@ const usersSlice = createSlice({
         saveUser: (state, { payload }) => {
             state.isAuthenticate = payload.isAuthenticate;
             state.user = payload.user;
-        }
+        },
+        // removeUser: (state, {pay})
     }
 })
 

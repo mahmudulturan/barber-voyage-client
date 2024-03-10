@@ -12,3 +12,9 @@ export type RegisterInputs = {
     email: string;
     password: string;
 }
+
+export type User = {
+    email: string;
+    name: string;
+    _id: string;
+}
