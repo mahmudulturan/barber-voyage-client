@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    _id: "",
-    name: "",
-    email: "",
+    isAuthenticate: false,
+    user: {}
 }
 
 const usersSlice = createSlice({
@@ -11,9 +10,8 @@ const usersSlice = createSlice({
     initialState,
     reducers: {
         saveUser: (state, { payload }) => {
-            state._id = payload._id;
-            state.name = payload.name;
-            state.email = payload.email;
+            state.isAuthenticate = true;
+            state.user = payload;
         }
     }
 })

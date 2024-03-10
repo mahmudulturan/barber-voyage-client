@@ -7,11 +7,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLoginUserMutation } from '@/redux/api/usersApi/usersApi';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { saveUser } from '@/redux/slices/usersSlice/usersSlice';
 
 export type LoginInputs = {
     email: string;
     password: string;
-    message : string;
+    message: string;
+    user: {}
 }
 
 const LoginForm = () => {
@@ -20,6 +23,8 @@ const LoginForm = () => {
     const [loginUser, { isLoading: isLoginLoading }] = useLoginUserMutation();
 
     const router = useRouter();
+
+    const dispatch = useDispatch();
 
     // handle for login user
     const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
@@ -33,7 +38,8 @@ const LoginForm = () => {
             dbResponsePromise,
             {
                 loading: 'Logging in...',
-                success: (data: { message: string }) => {
+                success: (data: LoginInputs) => {
+                    dispatch(saveUser(data.user))
                     router.push('/')
                     reset();
                     return `${data.message}`
