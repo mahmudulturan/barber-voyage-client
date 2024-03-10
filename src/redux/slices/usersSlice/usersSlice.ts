@@ -1,6 +1,8 @@
+import { userSliceState } from "@/types/types";
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+
+const initialState: userSliceState = {
     isAuthenticate: false,
     user: null
 }
@@ -13,10 +15,13 @@ const usersSlice = createSlice({
             state.isAuthenticate = payload.isAuthenticate;
             state.user = payload.user;
         },
-        // removeUser: (state, {pay})
+        removeUser: (state) => {
+            state.isAuthenticate = false;
+            state.user = null;
+        }
     }
 })
 
-export const { saveUser } = usersSlice.actions;
+export const { saveUser, removeUser } = usersSlice.actions;
 
 export default usersSlice.reducer;

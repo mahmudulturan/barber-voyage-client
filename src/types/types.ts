@@ -18,3 +18,8 @@ export type User = {
     name: string;
     _id: string;
 }
+
+export type userSliceState = {
+    isAuthenticate: boolean
+    user: User | null
+}
