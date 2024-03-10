@@ -17,8 +17,11 @@ const usersApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: data
             })
+        }),
+        currentUser: builder.query({
+            query: () => '/api/v1/user/current-user'
         })
     })
 })
 
-export const { useRegisterUserMutation, useLoginUserMutation } = usersApi;
+export const { useRegisterUserMutation, useLoginUserMutation, useCurrentUserQuery } = usersApi;
