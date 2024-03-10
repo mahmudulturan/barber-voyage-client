@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export type RegisterInputs = {
     message: string;
@@ -16,7 +16,6 @@ export type RegisterInputs = {
 }
 
 const RegisterForm = () => {
-    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<RegisterInputs>()
     const [registerUser, { isLoading: isRegistering }] = useRegisterUserMutation();
@@ -36,7 +35,7 @@ const RegisterForm = () => {
             dbResponsePromise,
             {
                 loading: 'Registering...',
-                success: (data) => {
+                success: (data: { message: string }) => {
                     router.push('/login')
                     reset();
                     return `${data.message}`

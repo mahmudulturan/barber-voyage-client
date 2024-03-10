@@ -2,26 +2,45 @@
 import React, { useState } from 'react';
 import Button from '@/components/shared/Button/Button';
 import InputWithLabel from '@/components/shared/Input/InputWithLabel';
-import { FaEye, FaEyeSlash, FaSpinner } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useLoginUserMutation } from '@/redux/api/usersApi/usersApi';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
-type LoginInputs = {
-    email: string
-    password: string
+export type LoginInputs = {
+    email: string;
+    password: string;
+    message : string;
 }
 
 const LoginForm = () => {
-    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<LoginInputs>()
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<LoginInputs>()
+    const [loginUser, { isLoading: isLoginLoading }] = useLoginUserMutation();
 
+    const router = useRouter();
 
     // handle for login user
-    const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
         const email = data.email;
         const password = data.password;
         const userInfo = { email, password };
-        console.log(userInfo);
+
+        // login in user with email and password
+        const dbResponsePromise = loginUser(userInfo).unwrap();
+        toast.promise(
+            dbResponsePromise,
+            {
+                loading: 'Logging in...',
+                success: (data: { message: string }) => {
+                    router.push('/')
+                    reset();
+                    return `${data.message}`
+                },
+                error: (err) => `${err?.data?.error || "Registration Failed"}`,
+            }
+        );
     }
 
     return (
@@ -56,14 +75,9 @@ const LoginForm = () => {
                 variant={"primaryReverse"}
                 className='w-full'
                 type='submit'
-                onClick={() => setLoading(pre => !pre)}
+                disabled={isLoginLoading}
             >
-                {
-                    loading ?
-                        <FaSpinner className='text-2xl py-0.5 animate-spin' />
-                        :
-                        "Login"
-                }
+                Login
             </Button>
         </form>
     );
