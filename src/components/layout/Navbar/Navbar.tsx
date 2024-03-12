@@ -13,7 +13,7 @@ const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
     const [prevPosition, setPrevPosition] = useState(0);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
-    
+
     const onScroll = () => {
         const currentPosition = window.scrollY;
         /* isScrolling state will be true when scroll up and current scroll position greater than 50.
@@ -32,7 +32,9 @@ const Navbar = () => {
 
 
     // user menu toggle handler
-    // const user
+    const userMenuToggler = () => {
+        setUserMenuOpen(pre => !pre);
+    }
 
     return (
         <nav className={`fixed w-full z-40 mb-24 duration-300 ${isScrolling ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
@@ -44,13 +46,18 @@ const Navbar = () => {
                 </div>
                 <div className='flex gap-5'>
                     <NavLink href='/'>Home</NavLink>
+                    <NavLink href='/explore'>Explore</NavLink>
                     <NavLink href='/about'>About</NavLink>
+
                     {/* user menu dropdown button */}
-                    <Button className='rounded-full text-xl gap-2 border border-seconderyCol'>
+                    <Button 
+                    onClick={userMenuToggler} 
+                    variant={userMenuOpen? "primaryReverse" : "primary"}
+                    className={`rounded-full text-xl gap-2`}>
                         <RiMenuLine /> <FaUserCircle />
                     </Button>
                 </div>
-                <UserMenu isScrolling={isScrolling} prevPosition={prevPosition} />
+                <UserMenu isScrolling={isScrolling} prevPosition={prevPosition} userMenuOpen={userMenuOpen} />
             </div>
         </nav>
     );
