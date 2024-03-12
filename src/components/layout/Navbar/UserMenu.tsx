@@ -11,7 +11,6 @@ type userMenuProps = {
     prevPosition: number;
     userMenuOpen: boolean;
     userMenuRef?: React.RefObject<HTMLDivElement>;
-
 }
 
 const UserMenu = ({ isScrolling, prevPosition, userMenuOpen, userMenuRef }: userMenuProps) => {
@@ -45,15 +44,24 @@ const UserMenu = ({ isScrolling, prevPosition, userMenuOpen, userMenuRef }: user
             {
                 user?.isAuthenticate ?
                     <>
-                        <Button variant={"primaryReverse"} className="w-full">Dashboard</Button>
+                        <Link href={'/dashboard'}>
+                            <Button variant={"primaryReverse"} className="w-full">Dashboard</Button>
+                        </Link>
                         <Button variant={"primaryReverse"} className="w-full" disabled={isLogoutLoading} onClick={handleLogout}>Logout</Button>
                     </>
                     :
+                    <>
                     <Link href='/login'>
                         <Button variant={"primaryReverse"} className="w-full">
                             Login
                         </Button>
                     </Link>
+                    <Link href='/register'>
+                        <Button variant={"primaryReverse"} className="w-full">
+                            Register
+                        </Button>
+                    </Link>
+                    </>
             }
         </div>
     );

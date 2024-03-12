@@ -11,6 +11,7 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         primaryReverse: "text-white hover:bg-primaryCol/90 bg-primaryCol duration-300",
         icon: "rounded-full bg-bgCol/60 hover:bg-bgCol/80 py-0.5 px-0.5 text-2xl duration-200",
+        sidebar: "hover:bg-white/10 text-white w-full justify-start gap-2 font-medium",
       }
     },
     defaultVariants: {
