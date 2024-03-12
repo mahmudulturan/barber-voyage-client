@@ -1,15 +1,17 @@
 import { shopData } from '@/types/types';
 import Image from 'next/image';
 import React from 'react';
+import ImageSlider from './ImageSlider';
+import Link from 'next/link';
 
 const ShopCard = ({ shopData }: { shopData: shopData }) => {
     return (
-        <div>
-            <Image 
-            className='w-full h-60 object-cover rounded-md'
-            src={shopData.images[1]} alt={`image of ${shopData.shopName}`} width={300} height={200} />
-            <h4>{shopData?.shopName}</h4>
-            <p>{shopData?.location}</p>
+        <div className='group relative'>
+            <ImageSlider _id={shopData?._id} images={shopData?.images} shopName={shopData.shopName} />
+            <Link href={`/explore/shop/${shopData?._id}`} className=''>
+                <h4 className='text-2xl uppercase inline'>{shopData?.shopName},</h4>
+                <p className='inline'> {shopData?.location}</p>
+            </Link>
         </div>
     );
 };
