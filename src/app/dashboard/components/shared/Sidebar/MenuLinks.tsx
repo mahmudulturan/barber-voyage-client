@@ -9,6 +9,7 @@ import { FaUsersGear } from "react-icons/fa6";
 import { GrUserWorker } from "react-icons/gr";
 import { FaSackDollar } from "react-icons/fa6";
 import { CgProfile } from "react-icons/cg";
+import NavLink from '@/components/shared/NavLink/NavLink';
 
 const MenuLinks = () => {
     return (
@@ -16,12 +17,12 @@ const MenuLinks = () => {
             <div className='my-6'>
                 <h5 className='text-textCol'>Pages</h5>
                 <div className='flex flex-col gap-2 justify-center h-full my-2'>
-                    <Link href={'/dashboard'}>
-                        <Button variant={"sidebar"}>
-                            <MdDashboard className='text-xl' />
-                            Dashboard
-                        </Button>
-                    </Link>
+
+                    <NavLink active='activeSidebar' other='sidebar' href='/dashboard'>
+                        <MdDashboard className='text-xl' />
+                        Dashboard
+                    </NavLink>
+
                     <Link href={'/'}>
                         <Button variant={"sidebar"}>
                             <CiShop className='text-xl' />
