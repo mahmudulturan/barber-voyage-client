@@ -10,9 +10,11 @@ type userMenuProps = {
     isScrolling: boolean;
     prevPosition: number;
     userMenuOpen: boolean;
+    userMenuRef?: React.RefObject<HTMLDivElement>;
+
 }
 
-const UserMenu = ({ isScrolling, prevPosition, userMenuOpen }: userMenuProps) => {
+const UserMenu = ({ isScrolling, prevPosition, userMenuOpen, userMenuRef }: userMenuProps) => {
     const user = useSelector((state: RootState) => state.usersSlice);
     const [logoutUser, { isLoading: isLogoutLoading }] = useLazyLogOutUserQuery();
 
@@ -34,9 +36,11 @@ const UserMenu = ({ isScrolling, prevPosition, userMenuOpen }: userMenuProps) =>
         );
     }
     return (
-        <div className={`absolute right-0 top-20 bg-seconderyCol z-30 w-60 py-3 px-3 rounded-md flex flex-col gap-2 duration-300 
+        <div
+            ref={userMenuRef}
+            className={`absolute right-0 top-20 bg-seconderyCol z-30 w-60 py-3 px-3 rounded-md flex flex-col gap-2 duration-300 
         ${isScrolling ? "bg-seconderyCol" : "bg-textCol/80"} 
-        ${userMenuOpen ? "translate-y-100": "-translate-y-[500px]"}
+        ${userMenuOpen ? "translate-y-100" : "-translate-y-[500px]"}
         ${isScrolling || (prevPosition <= 250) ? "" : "-translate-y-full"}`}>
             {
                 user?.isAuthenticate ?

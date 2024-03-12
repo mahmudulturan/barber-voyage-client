@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import NavLink from './NavLink';
 import Button from '@/components/shared/Button/Button';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RiMenuLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import UserMenu from './UserMenu';
@@ -13,6 +13,8 @@ const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
     const [prevPosition, setPrevPosition] = useState(0);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement | null>(null);
+    const userToggleButtonRef = useRef<HTMLButtonElement>(null);
 
     const onScroll = () => {
         const currentPosition = window.scrollY;
@@ -36,6 +38,23 @@ const Navbar = () => {
         setUserMenuOpen(pre => !pre);
     }
 
+
+    // user menu outside click handler
+    const handleClickOutside = (event: Event) => {
+        if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && userToggleButtonRef.current && !userToggleButtonRef.current.contains(event.target as Node)) {
+            setUserMenuOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        // Add the event listener when the component mounts
+        document.addEventListener("mousedown", handleClickOutside);
+        // Remove the event listener when the component unmounts
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
         <nav className={`fixed w-full z-40 mb-24 duration-300 ${isScrolling ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
             <div className='wrapper flex items-center justify-between py-4 relative'>
@@ -50,14 +69,15 @@ const Navbar = () => {
                     <NavLink href='/about'>About</NavLink>
 
                     {/* user menu dropdown button */}
-                    <Button 
-                    onClick={userMenuToggler} 
-                    variant={userMenuOpen? "primaryReverse" : "primary"}
-                    className={`rounded-full text-xl gap-2`}>
+                    <Button
+                        ref={userToggleButtonRef}
+                        onClick={userMenuToggler}
+                        variant={userMenuOpen ? "primaryReverse" : "primary"}
+                        className={`rounded-full text-xl gap-2`}>
                         <RiMenuLine /> <FaUserCircle />
                     </Button>
                 </div>
-                <UserMenu isScrolling={isScrolling} prevPosition={prevPosition} userMenuOpen={userMenuOpen} />
+                <UserMenu isScrolling={isScrolling} userMenuRef={userMenuRef} prevPosition={prevPosition} userMenuOpen={userMenuOpen} />
             </div>
         </nav>
     );
