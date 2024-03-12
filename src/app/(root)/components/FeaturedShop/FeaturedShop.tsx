@@ -14,7 +14,16 @@ const FeaturedShop = () => {
                 <h4 className='uppercase font-semibold text-3xl text-seconderyCol'>Featured BarberShop</h4>
                 <div className="mt-8 mb-10">
                     <Swiper
-                        slidesPerView={3}
+                        breakpoints={{
+                            640: {
+                                slidesPerView: 2,
+                                spaceBetween: 20,
+                            },
+                            768: {
+                                slidesPerView: 3,
+                                spaceBetween: 30,
+                            }
+                        }}
                         spaceBetween={30}
                         loop={true}
                         pagination={{
