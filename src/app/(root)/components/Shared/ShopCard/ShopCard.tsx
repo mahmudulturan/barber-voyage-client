@@ -8,9 +8,11 @@ const ShopCard = ({ shopData }: { shopData: shopData }) => {
     return (
         <div className='group relative'>
             <ImageSlider _id={shopData?._id} images={shopData?.images} shopName={shopData.shopName} />
-            <Link href={`/explore/shop/${shopData?._id}`} className=''>
-                <h4 className='text-2xl uppercase inline'>{shopData?.shopName},</h4>
-                <p className='inline'> {shopData?.location}</p>
+            <Link href={`/explore/shop/${shopData?._id}`}>
+                <div className='my-2'>
+                    <h4 className='text-2xl uppercase inline font-medium'>{shopData?.shopName},</h4>
+                    <p className='inline font-light text-black/90'> {shopData?.location}</p>
+                </div>
             </Link>
         </div>
     );
