@@ -24,3 +24,10 @@ export type userSliceState = {
     isAuthLoading: boolean;
     user: User | null;
 }
+
+export interface shopData {
+    _id: string;
+    images: string[];
+    shopName: string;
+    location: string;
+}
