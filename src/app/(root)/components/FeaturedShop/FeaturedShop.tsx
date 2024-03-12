@@ -1,15 +1,35 @@
+"use client"
 import { featuredBarberShop } from "@/constant/constant";
 import ShopCard from "../Shared/ShopCard/ShopCard";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+
 
 const FeaturedShop = () => {
     return (
-        <div className="bg-white min-h-[70vh] py-12">
+        <div className="bg-white py-12">
             <div className="wrapper">
                 <h4 className='uppercase font-semibold text-3xl text-seconderyCol'>Featured BarberShop</h4>
-                <div className="grid grid-cols-3 gap-6 my-6">
-                    {
-                        featuredBarberShop?.map((shop) => <ShopCard shopData={shop} key={shop?._id} />)
-                    }
+                <div className="mt-8 mb-10">
+                    <Swiper
+                        slidesPerView={3}
+                        spaceBetween={30}
+                        loop={true}
+                        pagination={{
+                            clickable: true,
+                            dynamicBullets: true,
+                        }}
+                        modules={[Pagination]}
+                        className="mySwiper"
+                    >
+                        {
+                            featuredBarberShop?.map((shop) => <SwiperSlide className="mb-10" key={shop?._id}><ShopCard shopData={shop} /></SwiperSlide>)
+                        }
+                    </Swiper>
+                </div>
+                <div>
                 </div>
             </div>
         </div>
