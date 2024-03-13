@@ -6,7 +6,7 @@ const SocialLogin = () => {
 
     // handler for login with google
     const handleGoogleLogin = () => {
-        window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/auth/google`;
+        window.location.href = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/v1/auth/google`;
     }
 
     return (
