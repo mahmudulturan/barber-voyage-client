@@ -22,8 +22,11 @@ const usersApi = baseApi.injectEndpoints({
         }),
         logOutUser: builder.query({
             query: () => '/api/v1/auth/logout'
+        }),
+        loginWithGoolge: builder.query({
+            query: () => '/auth/google'
         })
     })
 })
 
-export const { useRegisterUserMutation, useLoginUserMutation, useCurrentUserQuery, useLazyLogOutUserQuery } = usersApi;
+export const { useRegisterUserMutation, useLoginUserMutation, useCurrentUserQuery, useLazyLogOutUserQuery, useLazyLoginWithGoolgeQuery } = usersApi;
