@@ -4,13 +4,22 @@ import { Input } from '@/components/shared/Input/Input';
 import { barberSpecialties } from '@/constant/constant';
 import { RootState } from '@/redux/store';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { FaUpload } from "react-icons/fa6";
+import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
 
 const BecomeBarberForm = () => {
     const { user: userInfo } = useSelector((state: RootState) => state.usersSlice);
-    console.log(userInfo);
+    const [specialties, setSpecialties] = useState<string[]>([]);
+
+
+    // to delete selected specialties
+    const handleSpecialitiesRemove = (removeSpeciality: string) => {
+        const filter = specialties.filter(ingriedent => ingriedent !== removeSpeciality)
+        setSpecialties(filter)
+    }
+
     return (
         <form className='max-w-2xl mx-auto my-16 '>
 
@@ -39,8 +48,12 @@ const BecomeBarberForm = () => {
             {/* name and email info end */}
 
             {/* experience and speacilites select section start */}
-            <div className='flex flex-col  gap-6 mt-6'>
-                <select name="" id="" defaultValue={""} className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
+            <div className='flex flex-col gap-6 mt-6'>
+
+                {/* select experiences of barber */}
+                <select name="experiences" id="experiences"
+                    defaultValue={""}
+                    className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
                     <option value="" disabled>Your Experiences</option>
                     <option value="1/2 Years+">1/2 Years+</option>
                     <option value="1 Year+">1 Year+</option>
@@ -50,14 +63,38 @@ const BecomeBarberForm = () => {
                     <option value="5 Years+">5 Years+</option>
                     <option value="5 Years+">6 Years+</option>
                 </select>
-                <select defaultValue={""} name="" id="" className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
+
+                {/* select speacialites of barber */}
+                <select
+                    defaultValue={""}
+                    onChange={(e) => setSpecialties([...specialties, e.target.value])}
+                    name="specialties" id="specialties"
+                    className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
                     <option value="" disabled>Select Your Speacialties</option>
                     {
-                        barberSpecialties?.map((speciality, indx) => <option key={indx} value={speciality}>{speciality}</option>)
+                        barberSpecialties?.map((speciality, indx) => <option
+                            key={indx}
+                            disabled={specialties.find(selectedSpeciality => selectedSpeciality === speciality) !== undefined}
+                            value={speciality}>
+                            {speciality}
+                        </option>)
                     }
                 </select>
             </div>
+
+            {/* selected specialites of barber */}
+            <p className='my-2 px-1'>
+                {
+                    specialties.map((speciality, indx) => <span className='relative group' key={indx}> {speciality},
+                        <span onClick={() => handleSpecialitiesRemove(speciality)}
+                            className='p-0.5 rounded-full bg-white absolute text-sm group-hover:scale-100 scale-0 z-10 right-0 duration-300 cursor-pointer'><RxCross2 className='' /></span>
+                    </span>)
+                }
+            </p>
+
             {/* experience and speacilites select section end */}
+
+            {/* submit button */}
             <Button variant={"primaryReverse"} className='w-full my-6' type='submit'>Register as Barber</Button>
         </form>
     );
