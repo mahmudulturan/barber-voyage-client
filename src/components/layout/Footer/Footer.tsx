@@ -38,15 +38,21 @@ const Footer = () => {
                     {/* contact info section start */}
                     <div className='max-w-xs'>
                         <div>
-                            <h6 className='text-xl font-semibold uppercase'>Contact Info</h6>
+                            <h6 className='text-xl font-semibold uppercase'>Begin Your Career</h6>
                         </div>
                         <div className='my-3 flex flex-col gap-0.5'>
-                            <a href='mailto:info@barbervoyage.com' className='hover:text-primaryCol duration-300 cursor-pointer'>info@barbervoyage.com</a>
-                            <a href='mailto:help@barbervoyage.com' className='hover:text-primaryCol duration-300 cursor-pointer'>help@barbervoyage.com</a>
-                            <a href='tel:+880 154545545' className='hover:text-primaryCol duration-300 cursor-pointer'>+880154545545</a>
+                            <Link href={'#'} className='hover:text-primaryCol duration-300'>Become a Barber</Link>
+                            <Link href={'#'} className='hover:text-primaryCol duration-300'>Host Your Shop</Link>
                         </div>
                     </div>
                     {/* contact info section end */}
+
+
+                    {/* 
+                    <a href='mailto:info@barbervoyage.com' className='hover:text-primaryCol duration-300 cursor-pointer'>info@barbervoyage.com</a>
+                    <a href='mailto:help@barbervoyage.com' className='hover:text-primaryCol duration-300 cursor-pointer'>help@barbervoyage.com</a>
+                    <a href='tel:+880 154545545' className='hover:text-primaryCol duration-300 cursor-pointer'>+880154545545</a> 
+                    */}
 
                     {/* newsletter section start */}
                     <div className='max-w-sm'>
