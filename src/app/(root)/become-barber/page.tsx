@@ -1,4 +1,5 @@
 import React from 'react';
+import BecomeBarberForm from './components/BecomeBarberForm/BecomeBarberForm';
 
 const BecomeBarberPage = () => {
     return (
@@ -8,7 +9,7 @@ const BecomeBarberPage = () => {
                 <p className='text-seconderyCol/90 max-w-2xl'>Unlock your potential as a skilled barber by joining our community. Fill in all the required credentials to begin your journey towards mastering the art of barbering.</p>
             </div>
             <div>
-                
+                <BecomeBarberForm />
             </div>
         </div>
     );
