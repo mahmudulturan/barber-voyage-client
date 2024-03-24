@@ -41,8 +41,8 @@ const Footer = () => {
                             <h6 className='text-xl font-semibold uppercase'>Begin Your Career</h6>
                         </div>
                         <div className='my-3 flex flex-col gap-0.5'>
-                            <Link href={'#'} className='hover:text-primaryCol duration-300'>Become a Barber</Link>
-                            <Link href={'#'} className='hover:text-primaryCol duration-300'>Host Your Shop</Link>
+                            <Link href={'/become-barber'} className='hover:text-primaryCol duration-300'>Become a Barber</Link>
+                            <Link href={'/host-shop'} className='hover:text-primaryCol duration-300'>Host Your Shop</Link>
                         </div>
                     </div>
                     {/* contact info section end */}
