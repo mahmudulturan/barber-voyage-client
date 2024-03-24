@@ -12,7 +12,7 @@ const PopularCategory = () => {
                 <div className='grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-5 my-6'>
                     {
                         popularCategories.map((category, indx) => <Link href={`/explore?category=${category.query}`} key={indx}>
-                            <div className='duration-300 hover:bg-seconderyCol bg-white px-2 md:px-4 py-1 md:py-3 rounded-md group'>
+                            <div className='duration-300 hover:bg-seconderyCol bg-white px-2 md:px-4 py-2 md:py-3 rounded-md group'>
                                 <Image
                                     className='rounded-md w-full'
                                     src={category.image} height={188} width={188} alt={`image of ${category.name}`} />
