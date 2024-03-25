@@ -2,6 +2,7 @@
 import Button from '@/components/shared/Button/Button';
 import { Input } from '@/components/shared/Input/Input';
 import { barberSpecialties } from '@/constant/constant';
+import { imageUpload } from '@/lib/imageUpload';
 import { RootState } from '@/redux/store';
 import Image from 'next/image';
 import React, { useState } from 'react';
@@ -12,6 +13,8 @@ import { useSelector } from 'react-redux';
 const BecomeBarberForm = () => {
     const { user: userInfo } = useSelector((state: RootState) => state.usersSlice);
     const [specialties, setSpecialties] = useState<string[]>([]);
+    const [userImageUrl, setUserImageUrl] = useState();
+    const [documentUrl, setDocumentUrl] = useState();
 
 
     // to delete selected specialties
@@ -20,25 +23,49 @@ const BecomeBarberForm = () => {
         setSpecialties(filter)
     }
 
+    // handle image upload
+    const handleImageUpload = async (e: any) => {
+        const imageFile = e.target.files[0];
+        if (!imageFile) return;
+        const { data: imageData } = await imageUpload(imageFile);
+        setUserImageUrl(imageData.display_url);
+    }
+    console.log(userImageUrl);
+
     return (
         <form className='max-w-2xl mx-auto my-16 '>
 
             {/* personal image and document update section start */}
             <div className='flex flex-col md:flex-row gap-6 justify-between items-center my-6'>
+
+                {/* barber image section */}
                 <div className='mx-auto  border-2 inline-block relative rounded-full'>
-                    <Image className='w-52 h-52 object-cover mx-auto border rounded-full' src={"https://i.ibb.co/QCCPd4y/corporate-user-icon.png"} alt='image of barber' height={250} width={250} />
-                    <input type="file" name="document" id="document" hidden />
+                    <Image className='w-52 h-52 object-cover mx-auto border rounded-full'
+                        src={userImageUrl || "https://i.ibb.co/QCCPd4y/corporate-user-icon.png"}
+                        alt='image of barber'
+                        height={250} width={250} />
+
+                    <input onChange={(e) => handleImageUpload(e)} type="file" name="userImage" id="userImage" hidden />
                     <label
-                        className='absolute h-full w-full flex flex-col items-center justify-center top-0 cursor-pointer bg-seconderyCol/70 text-white font-medium uppercase gap-2 rounded-full' htmlFor="document"><FaUpload className='text-2xl' />Upload Your Image</label>
+                        className='absolute h-full w-full flex flex-col items-center justify-center top-0 cursor-pointer bg-seconderyCol/70 text-white font-medium uppercase gap-2 rounded-full' htmlFor="userImage">
+                        <FaUpload className='text-2xl' />
+                        Upload Your Image
+                    </label>
                 </div>
+
+                {/* barber document image section*/}
                 <div className='mx-auto  border-2 inline-block relative rounded'>
                     <Image className='w-52 h-52 object-cover mx-auto border' src={"https://i.ibb.co/QCCPd4y/corporate-user-icon.png"} alt='image of barber' height={250} width={250} />
                     <input type="file" name="document" id="document" hidden />
                     <label
-                        className='absolute h-full w-full flex flex-col items-center justify-center top-0 cursor-pointer bg-seconderyCol/70 text-white font-medium uppercase gap-2 rounded' htmlFor="document"><FaUpload className='text-2xl' />Upload Your Document</label>
+                        className='absolute h-full w-full flex flex-col items-center justify-center top-0 cursor-pointer bg-seconderyCol/70 text-white font-medium uppercase gap-2 rounded text-center' htmlFor="document">
+                        <FaUpload className='text-2xl' />
+                        Upload Your Document
+                    </label>
                 </div>
             </div>
             {/* personal image and document update section end */}
+
 
             {/* name and email info start */}
             <div className='flex flex-col  gap-6 mt-6'>
