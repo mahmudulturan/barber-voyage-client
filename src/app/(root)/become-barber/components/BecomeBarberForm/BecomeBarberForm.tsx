@@ -13,8 +13,9 @@ import { useSelector } from 'react-redux';
 const BecomeBarberForm = () => {
     const { user: userInfo } = useSelector((state: RootState) => state.usersSlice);
     const [specialties, setSpecialties] = useState<string[]>([]);
-    const [userImageUrl, setUserImageUrl] = useState();
-    const [documentUrl, setDocumentUrl] = useState();
+    const [userImageUrl, setUserImageUrl] = useState<string>();
+    const [documentUrl, setDocumentUrl] = useState<string>();
+    const [uploadLoading, setUploadLoading] = useState<boolean>();
 
 
     // to delete selected specialties
@@ -23,14 +24,27 @@ const BecomeBarberForm = () => {
         setSpecialties(filter)
     }
 
-    // handle image upload
+    // handle user image upload
     const handleImageUpload = async (e: any) => {
         const imageFile = e.target.files[0];
         if (!imageFile) return;
+        setUploadLoading(true);
         const { data: imageData } = await imageUpload(imageFile);
+        setUploadLoading(false);
         setUserImageUrl(imageData.display_url);
     }
+
+    // handle user image upload
+    const handleDocumentUpload = async (e: any) => {
+        const imageFile = e.target.files[0];
+        if (!imageFile) return;
+        setUploadLoading(true);
+        const { data: imageData } = await imageUpload(imageFile);
+        setUploadLoading(false);
+        setDocumentUrl(imageData.display_url);
+    }
     console.log(userImageUrl);
+    console.log(uploadLoading);
 
     return (
         <form className='max-w-2xl mx-auto my-16 '>
@@ -55,8 +69,11 @@ const BecomeBarberForm = () => {
 
                 {/* barber document image section*/}
                 <div className='mx-auto  border-2 inline-block relative rounded'>
-                    <Image className='w-52 h-52 object-cover mx-auto border' src={"https://i.ibb.co/QCCPd4y/corporate-user-icon.png"} alt='image of barber' height={250} width={250} />
-                    <input type="file" name="document" id="document" hidden />
+                    <Image className='w-52 h-52 object-cover mx-auto border'
+                        src={documentUrl || "https://i.ibb.co/B2rFjDf/Web-2835-29.jpg"}
+                        alt='image of barber'
+                        height={250} width={250} />
+                    <input onChange={(e) => handleDocumentUpload(e)} type="file" name="document" id="document" hidden />
                     <label
                         className='absolute h-full w-full flex flex-col items-center justify-center top-0 cursor-pointer bg-seconderyCol/70 text-white font-medium uppercase gap-2 rounded text-center' htmlFor="document">
                         <FaUpload className='text-2xl' />
@@ -122,7 +139,9 @@ const BecomeBarberForm = () => {
             {/* experience and speacilites select section end */}
 
             {/* submit button */}
-            <Button variant={"primaryReverse"} className='w-full my-6' type='submit'>Register as Barber</Button>
+            <Button variant={"primaryReverse"} className='w-full my-6' type='submit'>
+                {uploadLoading ? "Image Uploading..." : "Register as Barber"}
+            </Button>
         </form>
     );
 };
