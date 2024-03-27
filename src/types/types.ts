@@ -31,3 +31,10 @@ export interface shopData {
     shopName: string;
     location: string;
 }
+
+export interface IBarberRegisterInputs {
+    user: string;
+    experience: string;
+    specialties: string[];
+    document: string;
+}

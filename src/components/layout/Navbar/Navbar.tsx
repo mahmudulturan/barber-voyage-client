@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { RiMenuLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import UserMenu from './UserMenu';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
@@ -15,6 +16,9 @@ const Navbar = () => {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement | null>(null);
     const userToggleButtonRef = useRef<HTMLButtonElement>(null);
+
+    const pathname = usePathname();
+
 
     const onScroll = () => {
         const currentPosition = window.scrollY;
@@ -56,7 +60,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`fixed w-full z-40 mb-24 duration-300 ${isScrolling ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
+        <nav className={`fixed w-full z-40 mb-24 duration-300 ${isScrolling || pathname !== '/' ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
             <div className='wrapper flex items-center justify-between py-4 relative'>
                 <div>
                     <Link href={'/'} className='w-32'>
