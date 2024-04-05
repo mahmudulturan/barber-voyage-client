@@ -1,7 +1,7 @@
-import Banner from "./components/Banner/Banner";
-import FeaturedShop from "./components/FeaturedShop/FeaturedShop";
-import PopularCategory from "./components/PopularCategory/PopularCategory";
-import PopularCities from "./components/PopularCities/PopularCities";
+import Banner from "./components/Home/Banner/Banner";
+import FeaturedShop from "./components/Home/FeaturedShop/FeaturedShop";
+import PopularCategory from "./components/Home/PopularCategory/PopularCategory";
+import PopularCities from "./components/Home/PopularCities/PopularCities";
 
 const Home = () => {
     return (
