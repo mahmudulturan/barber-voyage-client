@@ -20,9 +20,7 @@ const HostShopForm = () => {
     const [userImageUrl, setUserImageUrl] = useState<string>();
     const [documentUrl, setDocumentUrl] = useState<string>();
     const [uploadLoading, setUploadLoading] = useState<boolean>();
-
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<IHostShopInputs>()
-
     const [hostShop, { isLoading: isHostLoading }] = useCreateShopMutation();
 
     // to delete selected specialties
@@ -57,6 +55,7 @@ const HostShopForm = () => {
         setDocumentUrl(imageData.display_url);
     }
 
+    // handle host shop submit
     const handleHostShop: SubmitHandler<IHostShopInputs> = async (data) => {
         const { name, country, postal, city, state, experience } = data;
         const reqBody = {
@@ -79,71 +78,72 @@ const HostShopForm = () => {
     return (
         <form onSubmit={handleSubmit(handleHostShop)} className='my-16 space-y-6'>
             <div className='flex justify-between gap-6'>
+
+                {/* shop info section start here */}
                 <div className='w-full'>
                     <h3 className='text-center text-2xl underline'>Shop Info:</h3>
-                    <div>
-                        {/* name and email info start */}
-                        <div className=''>
-                            <label htmlFor='name' className='mt-4 mb-2 ml-1'>Shop Name:</label>
-                            <Input {...register("name", { required: true })} id='name' type='text' placeholder='Type Your Shop Name' />
-                            {errors.name && <span className='text-red-400 ml-1'>Shop Name is required!</span>}
-                        </div>
-
-                        <h3 className='mt-4 mb-2 ml-1'>Shop Location:</h3>
-                        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                            <div>
-                                <Input {...register("city", { required: true })} type='text' placeholder='City' />
-                                {errors.city && <span className='text-red-400 ml-1'>City Name is required!</span>}
-                            </div>
-                            <div>
-                                <Input {...register("state", { required: true })} type='text' placeholder='State' />
-                                {errors.state && <span className='text-red-400 ml-1'>State is required!</span>}
-                            </div>
-                            <div>
-                                <Input {...register("postal", { required: true })} type='text' placeholder='Postal Code' />
-                                {errors.postal && <span className='text-red-400 ml-1'>Postal Code is required!</span>}
-                            </div>
-                            <div>
-                                <Input {...register("country", { required: true })} type='text' placeholder='Country' />
-                                {errors.country && <span className='text-red-400 ml-1'>Country Name is required!</span>}
-                            </div>
-                        </div>
-                        {/* name and email info end */}
-
-                        {/* experience and speacilites select section start */}
-                        <h3 className='mt-4 mb-2 ml-1'>Shop Services:</h3>
-                        <div className='flex flex-col gap-6'>
-                            {/* select speacialites of barber */}
-                            <select
-                                {...register("services", { required: true })}
-                                defaultValue={""}
-                                onChange={(e) => setServices([...services, e.target.value])}
-                                name="services" id="services"
-                                className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
-                                <option value="" disabled>Select Your Services</option>
-                                {
-                                    shopServices?.map((service, indx) => <option
-                                        key={indx}
-                                        disabled={services.find(selectedServices => selectedServices === service) !== undefined}
-                                        value={service}>
-                                        {service}
-                                    </option>)
-                                }
-                            </select>
-                        </div>
-                        {errors.services && <span className='text-red-400 ml-1'>Service is required!</span>}
-                        {/* selected services of shop */}
-                        <p className='my-2 px-1'>
-                            {
-                                services.map((service, indx) => <span className='relative group' key={indx}> {service},
-                                    <span onClick={() => handleServicesRemove(service)}
-                                        className='p-0.5 rounded-full bg-white absolute text-sm group-hover:scale-100 scale-0 z-10 right-0 duration-300 cursor-pointer'><RxCross2 className='' /></span>
-                                </span>)
-                            }
-                        </p>
-                        {/* experience and speacilites select section end */}
+                    {/* shop name */}
+                    <div className=''>
+                        <label htmlFor='name' className='mt-4 mb-2 ml-1'>Shop Name:</label>
+                        <Input {...register("name", { required: true })} id='name' type='text' placeholder='Type Your Shop Name' />
+                        {errors.name && <span className='text-red-400 ml-1'>Shop Name is required!</span>}
                     </div>
 
+                    {/* shop location section start */}
+                    <h3 className='mt-4 mb-2 ml-1'>Shop Location:</h3>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                        <div>
+                            <Input {...register("city", { required: true })} type='text' placeholder='City' />
+                            {errors.city && <span className='text-red-400 ml-1'>City Name is required!</span>}
+                        </div>
+                        <div>
+                            <Input {...register("state", { required: true })} type='text' placeholder='State' />
+                            {errors.state && <span className='text-red-400 ml-1'>State is required!</span>}
+                        </div>
+                        <div>
+                            <Input {...register("postal", { required: true })} type='text' placeholder='Postal Code' />
+                            {errors.postal && <span className='text-red-400 ml-1'>Postal Code is required!</span>}
+                        </div>
+                        <div>
+                            <Input {...register("country", { required: true })} type='text' placeholder='Country' />
+                            {errors.country && <span className='text-red-400 ml-1'>Country Name is required!</span>}
+                        </div>
+                    </div>
+                    {/* shop location section end */}
+
+                    {/* shop services select section start */}
+                    <h3 className='mt-4 mb-2 ml-1'>Shop Services:</h3>
+                    <div className='flex flex-col'>
+                        <select
+                            {...register("services", { required: true })}
+                            defaultValue={""}
+                            onChange={(e) => setServices([...services, e.target.value])}
+                            name="services" id="services"
+                            className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
+                            <option value="" disabled>Select Your Services</option>
+                            {
+                                shopServices?.map((service, indx) => <option
+                                    key={indx}
+                                    disabled={services.find(selectedServices => selectedServices === service) !== undefined}
+                                    value={service}>
+                                    {service}
+                                </option>)
+                            }
+                        </select>
+                        {errors.services && <span className='text-red-400 ml-1'>Service is required!</span>}
+                    </div>
+
+                    {/* selected services of shop */}
+                    <p className='my-2 px-1'>
+                        {
+                            services.map((service, indx) => <span className='relative group' key={indx}> {service},
+                                <span onClick={() => handleServicesRemove(service)}
+                                    className='p-0.5 rounded-full bg-white absolute text-sm group-hover:scale-100 scale-0 z-10 right-0 duration-300 cursor-pointer'><RxCross2 className='' /></span>
+                            </span>)
+                        }
+                    </p>
+
+                    {/* shop images and shop license section start */}
                     <div>
                         <h3 className='mt-4 mb-2 ml-1'>Shop Images:</h3>
                         <Input type='file' className='bg-white' />
@@ -152,18 +152,21 @@ const HostShopForm = () => {
                         <h3 className='mt-4 mb-2 ml-1'>Shop License:</h3>
                         <Input type='file' className='bg-white' />
                     </div>
+                    {/* shop images and shop license section end */}
                 </div>
+                {/* shop info section end here */}
 
+                {/* owners info section start here */}
                 <div className='w-full'>
                     <h3 className='text-center text-2xl underline'>Owner Info:</h3>
                     {/* personal image and document update section start */}
                     <div className='flex flex-col md:flex-row gap-6 justify-between items-center my-6'>
 
-                        {/* barber image section */}
+                        {/* owner image section */}
                         <div className='mx-auto  border-2 inline-block relative rounded-full'>
                             <Image className='w-52 h-52 object-cover mx-auto border rounded-full'
                                 src={userImageUrl || "https://i.ibb.co/QCCPd4y/corporate-user-icon.png"}
-                                alt='image of barber'
+                                alt='image of owner'
                                 height={250} width={250} />
 
                             <input onChange={(e) => handleImageUpload(e)} type="file" name="userImage" id="userImage" hidden />
@@ -174,11 +177,11 @@ const HostShopForm = () => {
                             </label>
                         </div>
 
-                        {/* barber document image section*/}
+                        {/* owner document image section*/}
                         <div className='mx-auto  border-2 inline-block relative rounded'>
                             <Image className='w-52 h-52 object-cover mx-auto border'
                                 src={documentUrl || "https://i.ibb.co/B2rFjDf/Web-2835-29.jpg"}
-                                alt='image of barber'
+                                alt='image of owner'
                                 height={250} width={250} />
                             <input onChange={(e) => handleDocumentUpload(e)} type="file" name="document" id="document" hidden />
                             <label
@@ -191,24 +194,22 @@ const HostShopForm = () => {
                     {/* personal image and document update section end */}
 
 
-                    {/* name and email info start */}
+                    {/* owner email info */}
                     <div className='mt-4 flex flex-col gap-1'>
-                        <label htmlFor='ownerEmail' className='ml-1'>Owner's Name:</label>
+                        <label htmlFor='ownerEmail' className='ml-1'>Owner's Email:</label>
                         <Input type='text' id='ownerEmail' defaultValue={userInfo?.email} />
                     </div>
-                    {/* name and email info end */}
 
-                    {/* name and email info start */}
+                    {/* owner name info */}
                     <div className='mt-4 flex flex-col gap-1'>
                         <label htmlFor='ownerName' className='ml-1'>Owner's Name:</label>
                         <Input type='text' id='ownerName' defaultValue={userInfo?.name} />
                     </div>
-                    {/* name and email info end */}
 
                     {/* experience and speacilites select section start */}
                     <div className='mt-4 flex flex-col gap-1'>
                         <label htmlFor='ownerName' className='ml-1'>Owner's Experiences:</label>
-                        {/* select experiences of barber */}
+                        {/* select experiences of owner */}
                         <select {...register("experience", { required: true })} name="experience" id="experience"
                             defaultValue={""}
                             className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
@@ -244,6 +245,7 @@ const HostShopForm = () => {
                             }
                         </select>
                     </div>
+
                     {errors.specialties && <span className='text-red-400 ml-1'>Speacialties is required!</span>}
                     {/* selected specialites of barber */}
                     <p className='my-2 px-1'>
@@ -256,11 +258,13 @@ const HostShopForm = () => {
                     </p>
                     {/* experience and speacilites select section end */}
                 </div>
+                {/* owners info section end here */}
+
             </div>
 
             {/* submit button */}
-            <Button variant={"primaryReverse"} className={`w-full my-6 ${isHostLoading || uploadLoading ? "saturate-50" : "saturate-100" }`} disabled={isHostLoading || uploadLoading} type='submit'>
-                {uploadLoading ? "Image Uploading..." : isHostLoading? "Hosting Your Shop..." : "Host Your Shop" }
+            <Button variant={"primaryReverse"} className={`w-full my-6 ${isHostLoading || uploadLoading ? "saturate-50" : "saturate-100"}`} disabled={isHostLoading || uploadLoading} type='submit'>
+                {uploadLoading ? "Image Uploading..." : isHostLoading ? "Hosting Your Shop..." : "Host Your Shop"}
             </Button>
         </form>
     );
