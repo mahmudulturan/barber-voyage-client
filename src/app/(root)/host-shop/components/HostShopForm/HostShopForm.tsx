@@ -77,7 +77,7 @@ const HostShopForm = () => {
 
     return (
         <form onSubmit={handleSubmit(handleHostShop)} className='my-16 space-y-6'>
-            <div className='flex justify-between gap-6'>
+            <div className='flex flex-col md:flex-row justify-between gap-6'>
 
                 {/* shop info section start here */}
                 <div className='w-full'>
