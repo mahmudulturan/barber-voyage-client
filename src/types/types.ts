@@ -38,3 +38,21 @@ export interface IBarberRegisterInputs {
     specialties: string[];
     document: string;
 }
+
+export interface IHostShopInputs {
+    user: string;
+    experience: string;
+    specialties: string[];
+    document: string;
+    name: string;
+    owner: string;
+    barbers: string[];
+    shopImages: string[];
+    license: string;
+    location: object;
+    country: string;
+    city: string;
+    state: string;
+    postal: string;
+    services: string[];
+}

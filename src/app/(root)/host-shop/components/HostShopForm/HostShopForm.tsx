@@ -4,8 +4,10 @@ import { Input } from '@/components/shared/Input/Input';
 import { barberSpecialties, shopServices } from '@/constant/constant';
 import { imageUpload } from '@/lib/imageUpload';
 import { RootState } from '@/redux/store';
+import { IHostShopInputs } from '@/types/types';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { FaUpload } from "react-icons/fa6";
 import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
@@ -18,6 +20,7 @@ const HostShopForm = () => {
     const [documentUrl, setDocumentUrl] = useState<string>();
     const [uploadLoading, setUploadLoading] = useState<boolean>();
 
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<IHostShopInputs>()
 
     // to delete selected specialties
     const handleSpecialitiesRemove = (removeSpeciality: string) => {
@@ -51,24 +54,56 @@ const HostShopForm = () => {
         setDocumentUrl(imageData.display_url);
     }
 
+    const handleHostShop: SubmitHandler<IHostShopInputs> = async (data) => {
+        const { name, country, postal, city, state, experience } = data;
+        const reqBody = {
+            name,
+            user: userInfo?._id,
+            barbers: ["65f7c66f6fb3480096724dd0", "65f7c5eef7ce78693e7b587e"],
+            shopImages: ["https://i.ibb.co/dJVTTNR/steptodown-com662535.jpg",
+                "https://i.ibb.co/sJM2kF6/steptodown-com192105.jpg",
+                "https://i.ibb.co/Wxw5BX8/steptodown-com214667.jpg"],
+            license: "https://i.ibb.co/MZcR9by/43716.jpg",
+            location: { country, postal, city, state },
+            services,
+            experience: experience,
+            specialties
+        }
+        console.log(reqBody);
+
+    }
+
     return (
-        <form className='my-16 space-y-6'>
+        <form onSubmit={handleSubmit(handleHostShop)} className='my-16 space-y-6'>
             <div className='flex justify-between gap-6'>
                 <div className='w-full'>
                     <h3 className='text-center text-2xl underline'>Shop Info:</h3>
                     <div>
                         {/* name and email info start */}
                         <div className=''>
-                            <h3 className='mt-4 mb-2 ml-1'>Shop Name:</h3>
-                            <Input type='text' placeholder='Type Your Shop Name' />
+                            <label htmlFor='name' className='mt-4 mb-2 ml-1'>Shop Name:</label>
+                            <Input {...register("name", { required: true })} id='name' type='text' placeholder='Type Your Shop Name' />
+                            {errors.name && <span className='text-red-400 ml-1'>Shop Name is required!</span>}
                         </div>
 
                         <h3 className='mt-4 mb-2 ml-1'>Shop Location:</h3>
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                            <Input type='text' placeholder='City' />
-                            <Input type='text' placeholder='State' />
-                            <Input type='text' placeholder='District' />
-                            <Input type='text' placeholder='Country' />
+                            <div>
+                                <Input {...register("city", { required: true })} type='text' placeholder='City' />
+                                {errors.city && <span className='text-red-400 ml-1'>City Name is required!</span>}
+                            </div>
+                            <div>
+                                <Input {...register("state", { required: true })} type='text' placeholder='State' />
+                                {errors.state && <span className='text-red-400 ml-1'>State is required!</span>}
+                            </div>
+                            <div>
+                                <Input {...register("postal", { required: true })} type='text' placeholder='Postal Code' />
+                                {errors.postal && <span className='text-red-400 ml-1'>Postal Code is required!</span>}
+                            </div>
+                            <div>
+                                <Input {...register("country", { required: true })} type='text' placeholder='Country' />
+                                {errors.country && <span className='text-red-400 ml-1'>Country Name is required!</span>}
+                            </div>
                         </div>
                         {/* name and email info end */}
 
@@ -77,11 +112,12 @@ const HostShopForm = () => {
                         <div className='flex flex-col gap-6'>
                             {/* select speacialites of barber */}
                             <select
+                                {...register("services", { required: true })}
                                 defaultValue={""}
                                 onChange={(e) => setServices([...services, e.target.value])}
                                 name="services" id="services"
                                 className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
-                                <option value="" disabled>Select Your Speacialties</option>
+                                <option value="" disabled>Select Your Services</option>
                                 {
                                     shopServices?.map((service, indx) => <option
                                         key={indx}
@@ -92,6 +128,7 @@ const HostShopForm = () => {
                                 }
                             </select>
                         </div>
+                        {errors.services && <span className='text-red-400 ml-1'>Service is required!</span>}
                         {/* selected services of shop */}
                         <p className='my-2 px-1'>
                             {
@@ -169,7 +206,7 @@ const HostShopForm = () => {
                     <div className='mt-4 flex flex-col gap-1'>
                         <label htmlFor='ownerName' className='ml-1'>Owner's Experiences:</label>
                         {/* select experiences of barber */}
-                        <select name="experiences" id="experiences"
+                        <select {...register("experience", { required: true })} name="experience" id="experience"
                             defaultValue={""}
                             className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
                             <option value="" disabled>Select Your Experiences</option>
@@ -182,11 +219,14 @@ const HostShopForm = () => {
                             <option value="5 Years+">6 Years+</option>
                         </select>
                     </div>
-                    {/* experience and speacilites select section start */}
+                    {errors.country && <span className='text-red-400 ml-1'>Experiences is required!</span>}
+
+                    {/* speacilites select section start */}
                     <div className='mt-4 flex flex-col gap-1'>
                         <label htmlFor='ownerName' className='ml-1'>Owner's Speacialties:</label>
                         <select
                             defaultValue={""}
+                            {...register("specialties", { required: true })}
                             onChange={(e) => setSpecialties([...specialties, e.target.value])}
                             name="specialties" id="specialties"
                             className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
@@ -201,6 +241,7 @@ const HostShopForm = () => {
                             }
                         </select>
                     </div>
+                    {errors.country && <span className='text-red-400 ml-1'>Speacialties is required!</span>}
                     {/* selected specialites of barber */}
                     <p className='my-2 px-1'>
                         {
