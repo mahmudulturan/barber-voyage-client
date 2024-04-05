@@ -3,6 +3,7 @@ import Button from '@/components/shared/Button/Button';
 import { Input } from '@/components/shared/Input/Input';
 import { barberSpecialties, shopServices } from '@/constant/constant';
 import { imageUpload } from '@/lib/imageUpload';
+import { useCreateShopMutation } from '@/redux/api/ownersApi/ownersApi';
 import { RootState } from '@/redux/store';
 import { IHostShopInputs } from '@/types/types';
 import Image from 'next/image';
@@ -21,6 +22,8 @@ const HostShopForm = () => {
     const [uploadLoading, setUploadLoading] = useState<boolean>();
 
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<IHostShopInputs>()
+
+    const [hostShop, { isLoading: isHostLoading }] = useCreateShopMutation();
 
     // to delete selected specialties
     const handleSpecialitiesRemove = (removeSpeciality: string) => {
@@ -69,8 +72,8 @@ const HostShopForm = () => {
             experience: experience,
             specialties
         }
-        console.log(reqBody);
-
+        const dbResponse = await hostShop(reqBody).unwrap();
+        console.log(dbResponse)
     }
 
     return (
@@ -219,7 +222,7 @@ const HostShopForm = () => {
                             <option value="5 Years+">6 Years+</option>
                         </select>
                     </div>
-                    {errors.country && <span className='text-red-400 ml-1'>Experiences is required!</span>}
+                    {errors.experience && <span className='text-red-400 ml-1'>Experiences is required!</span>}
 
                     {/* speacilites select section start */}
                     <div className='mt-4 flex flex-col gap-1'>
@@ -241,7 +244,7 @@ const HostShopForm = () => {
                             }
                         </select>
                     </div>
-                    {errors.country && <span className='text-red-400 ml-1'>Speacialties is required!</span>}
+                    {errors.specialties && <span className='text-red-400 ml-1'>Speacialties is required!</span>}
                     {/* selected specialites of barber */}
                     <p className='my-2 px-1'>
                         {
@@ -256,8 +259,8 @@ const HostShopForm = () => {
             </div>
 
             {/* submit button */}
-            <Button variant={"primaryReverse"} className='w-full my-6' type='submit'>
-                {uploadLoading ? "Image Uploading..." : "Host Your Shop"}
+            <Button variant={"primaryReverse"} className={`w-full my-6 ${isHostLoading || uploadLoading ? "saturate-50" : "saturate-100" }`} disabled={isHostLoading || uploadLoading} type='submit'>
+                {uploadLoading ? "Image Uploading..." : isHostLoading? "Hosting Your Shop..." : "Host Your Shop" }
             </Button>
         </form>
     );
