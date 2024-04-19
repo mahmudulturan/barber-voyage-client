@@ -44,7 +44,7 @@ const Sidebar = () => {
     }
     return (
         <div className='fixed lg:flex flex-col lg:h-full w-full lg:w-80 bg-seconderyCol'>
-            <div className='flex items-center justify-between my-2 px-3'>
+            <div className='flex items-center justify-between lg:justify-center my-2 px-3'>
                 <Link href={'/'} className='w-32'>
                     <Image width={126} src={logo} priority={true} alt='Logo of barber voyage' />
                 </Link>
