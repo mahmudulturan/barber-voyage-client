@@ -13,6 +13,7 @@ import { CiLogout } from "react-icons/ci";
 import MenuLinks from './MenuLinks';
 import { RxCross2 } from 'react-icons/rx';
 import { IoMenuSharp } from 'react-icons/io5';
+import MobileMenu from './MobileMenu';
 
 const Sidebar = () => {
     const user = useSelector((state: RootState) => state.usersSlice);
@@ -42,7 +43,7 @@ const Sidebar = () => {
         );
     }
     return (
-        <div className='fixed lg:flex flex-col lg:h-full w-full lg:w-80 px-3 bg-seconderyCol'>
+        <div className='fixed lg:flex flex-col lg:h-full w-full lg:w-80 bg-seconderyCol'>
             <div className='flex items-center justify-between my-2'>
                 <Link href={'/'} className='w-32'>
                     <Image width={126} src={logo} priority={true} alt='Logo of barber voyage' />
@@ -75,6 +76,9 @@ const Sidebar = () => {
                     <CiLogout className='text-xl font-semibold' />
                     Logout
                 </Button>
+            </div>
+            <div>
+                <MobileMenu isMenuOpen={isMenuOpen} />
             </div>
         </div>
     );
