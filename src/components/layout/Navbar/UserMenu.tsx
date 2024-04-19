@@ -37,7 +37,7 @@ const UserMenu = ({ isScrolling, prevPosition, userMenuOpen, userMenuRef }: user
     return (
         <div
             ref={userMenuRef}
-            className={`absolute right-0 top-20 bg-seconderyCol z-30 w-60 py-3 px-3 rounded-md flex flex-col gap-2 duration-200 origin-top
+            className={`absolute right-0 top-20 bg-seconderyCol z-30 w-60 py-3 px-3 rounded-md hidden md:flex flex-col gap-2 duration-200 origin-top
         ${isScrolling ? "bg-seconderyCol" : "bg-textCol/80"} 
         ${userMenuOpen ? "scale-y-100" : "scale-y-0"}
         ${isScrolling || (prevPosition <= 250) ? "" : "-translate-y-full"}`}>

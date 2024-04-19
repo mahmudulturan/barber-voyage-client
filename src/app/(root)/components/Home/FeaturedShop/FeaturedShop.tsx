@@ -1,6 +1,6 @@
 "use client"
 import { featuredBarberShop } from "@/constant/constant";
-import ShopCard from "../Shared/ShopCard/ShopCard";
+import ShopCard from "../../Shared/ShopCard/ShopCard";
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';

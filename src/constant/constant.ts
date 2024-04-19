@@ -117,3 +117,23 @@ export const barberSpecialties = [
     "Haircuts for Athletes",
     "Haircuts for Business Professionals"
 ];
+
+export const shopServices = [
+    "Haircuts",
+    "Beard Trimming",
+    "Hair Styling",
+    "Coloring",
+    "Haircuts for Men",
+    "Haircuts for Women",
+    "Haircuts for Kids",
+    "Special Occasions",
+    "Hair Extensions",
+    "Hair Replacement",
+    "Haircuts for Seniors",
+    "Haircuts for Couples",
+    "Haircuts for Families",
+    "Haircuts for Brides",
+    "Haircuts for Grooms",
+    "Haircuts for Athletes",
+    "Haircuts for Business Professionals"
+];

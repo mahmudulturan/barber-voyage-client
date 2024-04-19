@@ -10,13 +10,13 @@ import SearchForm from './SearchForm';
 const Banner = () => {
 
     return (
-        <div className='min-h-screen'
+        <div className='min-h-screen -mt-[92px]'
             style={{
                 backgroundImage: `url(https://i.ibb.co/NxrLWN6/banner-Image-3.jpg)`,
                 backgroundRepeat: "no-repeat", backgroundSize: "cover"
             }}>
             <div className='h-full w-full min-h-screen bg-seconderyCol/60 flex items-center justify-end'>
-                <div className='wrapper w-full flex justify-end'>
+                <div className='wrapper w-full flex justify-end mt-[12px]'>
                     <SearchForm />
                 </div>
 

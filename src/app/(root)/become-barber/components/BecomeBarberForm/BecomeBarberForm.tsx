@@ -3,9 +3,14 @@ import Button from '@/components/shared/Button/Button';
 import { Input } from '@/components/shared/Input/Input';
 import { barberSpecialties } from '@/constant/constant';
 import { imageUpload } from '@/lib/imageUpload';
+import { useRegisterBarberMutation } from '@/redux/api/barbersApi/barbersApi';
 import { RootState } from '@/redux/store';
+import { IBarberRegisterInputs, IBecomeBarberInputs } from '@/types/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { FaUpload } from "react-icons/fa6";
 import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
@@ -16,7 +21,10 @@ const BecomeBarberForm = () => {
     const [userImageUrl, setUserImageUrl] = useState<string>();
     const [documentUrl, setDocumentUrl] = useState<string>();
     const [uploadLoading, setUploadLoading] = useState<boolean>();
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<IBecomeBarberInputs>()
+    const [becomeBarber, { isLoading: isBarberLoading }] = useRegisterBarberMutation();
 
+    const router = useRouter();
 
     // to delete selected specialties
     const handleSpecialitiesRemove = (removeSpeciality: string) => {
@@ -43,11 +51,31 @@ const BecomeBarberForm = () => {
         setUploadLoading(false);
         setDocumentUrl(imageData.display_url);
     }
-    console.log(userImageUrl);
-    console.log(uploadLoading);
+
+    // handle host shop submit
+    const handleBecomeBarber: SubmitHandler<IBecomeBarberInputs> = async (data) => {
+        const { experience } = data;
+        const reqBody = {
+            document: "https://i.ibb.co/MZcR9by/43716.jpg", experience, specialties, user: userInfo?._id
+        };
+        const dbResponsePromise = becomeBarber(reqBody).unwrap();
+        toast.promise(
+            dbResponsePromise,
+            {
+                loading: 'Registering...',
+                success: (data: IBarberRegisterInputs) => {
+                    const message = data.message || "Registration successful";
+                    router.push('/dashboard');
+                    reset();
+                    return message;
+                },
+                error: (err) => `${err?.data?.error || "Registration Failed"}`,
+            }
+        );
+    }
 
     return (
-        <form className='max-w-2xl mx-auto my-16 '>
+        <form onSubmit={handleSubmit(handleBecomeBarber)} className='max-w-2xl mx-auto my-16 '>
 
             {/* personal image and document update section start */}
             <div className='flex flex-col md:flex-row gap-6 justify-between items-center my-6'>
@@ -95,35 +123,42 @@ const BecomeBarberForm = () => {
             <div className='flex flex-col gap-6 mt-6'>
 
                 {/* select experiences of barber */}
-                <select name="experiences" id="experiences"
-                    defaultValue={""}
-                    className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
-                    <option value="" disabled>Your Experiences</option>
-                    <option value="1/2 Years+">1/2 Years+</option>
-                    <option value="1 Year+">1 Year+</option>
-                    <option value="2 Years+">2 Years+</option>
-                    <option value="3 Years+">3 Years+</option>
-                    <option value="4 Years+">4 Years+</option>
-                    <option value="5 Years+">5 Years+</option>
-                    <option value="5 Years+">6 Years+</option>
-                </select>
+                <div>
+                    <select {...register("experience", { required: true })} name="experience" id="experience"
+                        defaultValue={""}
+                        className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
+                        <option value="" disabled>Your Experiences</option>
+                        <option value="1/2 Years+">1/2 Years+</option>
+                        <option value="1 Year+">1 Year+</option>
+                        <option value="2 Years+">2 Years+</option>
+                        <option value="3 Years+">3 Years+</option>
+                        <option value="4 Years+">4 Years+</option>
+                        <option value="5 Years+">5 Years+</option>
+                        <option value="5 Years+">6 Years+</option>
+                    </select>
+                    {errors.experience && <span className='text-red-400 ml-1'>Experiences is required!</span>}
+                </div>
 
                 {/* select speacialites of barber */}
-                <select
-                    defaultValue={""}
-                    onChange={(e) => setSpecialties([...specialties, e.target.value])}
-                    name="specialties" id="specialties"
-                    className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
-                    <option value="" disabled>Select Your Speacialties</option>
-                    {
-                        barberSpecialties?.map((speciality, indx) => <option
-                            key={indx}
-                            disabled={specialties.find(selectedSpeciality => selectedSpeciality === speciality) !== undefined}
-                            value={speciality}>
-                            {speciality}
-                        </option>)
-                    }
-                </select>
+                <div>
+                    <select
+                        defaultValue={""}
+                        {...register("specialties", { required: true })}
+                        onChange={(e) => setSpecialties([...specialties, e.target.value])}
+                        name="specialties" id="specialties"
+                        className='flex w-full rounded-md border border-input bg-white py-2 px-2 outline-none'>
+                        <option value="" disabled>Select Your Speacialties</option>
+                        {
+                            barberSpecialties?.map((speciality, indx) => <option
+                                key={indx}
+                                disabled={specialties.find(selectedSpeciality => selectedSpeciality === speciality) !== undefined}
+                                value={speciality}>
+                                {speciality}
+                            </option>)
+                        }
+                    </select>
+                    {errors.specialties && <span className='text-red-400 ml-1'>Speacialties is required!</span>}
+                </div>
             </div>
 
             {/* selected specialites of barber */}

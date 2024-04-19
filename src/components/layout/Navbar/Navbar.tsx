@@ -9,13 +9,19 @@ import { RiMenuLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import UserMenu from './UserMenu';
 import { usePathname } from 'next/navigation';
+import { IoMenuSharp } from "react-icons/io5";
+import MobileMenu from './MobileMenu';
+import { RxCross2 } from 'react-icons/rx';
 
 const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
     const [prevPosition, setPrevPosition] = useState(0);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement | null>(null);
     const userToggleButtonRef = useRef<HTMLButtonElement>(null);
+    const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+    const mobileToggleButtonRef = useRef<HTMLButtonElement>(null);
 
     const pathname = usePathname();
 
@@ -42,11 +48,19 @@ const Navbar = () => {
         setUserMenuOpen(pre => !pre);
     }
 
+    // mobile menu toggle handler
+    const mobileMenuToggler = () => {
+        setMobileMenuOpen(pre => !pre);
+    }
+
 
     // user menu outside click handler
     const handleClickOutside = (event: Event) => {
         if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && userToggleButtonRef.current && !userToggleButtonRef.current.contains(event.target as Node)) {
             setUserMenuOpen(false);
+        }
+        if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node) && mobileToggleButtonRef.current && !mobileToggleButtonRef.current.contains(event.target as Node)) {
+            setMobileMenuOpen(false);
         }
     };
 
@@ -60,14 +74,17 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`fixed w-full z-40 mb-24 duration-300 ${isScrolling || pathname !== '/' ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
+        <nav className={`sticky top-0 w-full z-40 duration-300 ${isScrolling || pathname !== '/' ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
             <div className='wrapper flex items-center justify-between py-4 relative'>
                 <div>
                     <Link href={'/'} className='w-32'>
                         <Image width={126} src={logo} alt='Logo of barber voyage' />
                     </Link>
                 </div>
-                <div className='flex gap-5'>
+
+
+                {/* navlinks for larger devices start */}
+                <div className='hidden md:flex gap-5'>
                     <NavLink href='/'>Home</NavLink>
                     <NavLink href='/explore'>Explore</NavLink>
                     <NavLink href='/about'>About</NavLink>
@@ -81,6 +98,28 @@ const Navbar = () => {
                         <RiMenuLine /> <FaUserCircle />
                     </Button>
                 </div>
+                {/* navlinks for larger devices end */}
+
+                {/* mobile menu dropdown button */}
+                <Button
+                    ref={mobileToggleButtonRef}
+                    onClick={mobileMenuToggler}
+                    variant={mobileMenuOpen ? "primaryReverse" : "primary"}
+                    className={`rounded-full md:hidden text-2xl gap-2`}>
+                    <div className='transition-opacity duration-200'>
+                        {
+                            mobileMenuOpen ?
+                                <RxCross2 />
+                                :
+                                <IoMenuSharp />
+                        }
+                    </div>
+                </Button>
+
+                {/* mobile dropdown menu */}
+                <MobileMenu isScrolling={isScrolling} mobileMenuRef={mobileMenuRef} prevPosition={prevPosition} mobileMenuOpen={mobileMenuOpen} />
+
+                {/* user dropdown menu */}
                 <UserMenu isScrolling={isScrolling} userMenuRef={userMenuRef} prevPosition={prevPosition} userMenuOpen={userMenuOpen} />
             </div>
         </nav>
