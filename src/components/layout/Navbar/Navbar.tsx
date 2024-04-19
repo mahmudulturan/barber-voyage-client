@@ -9,11 +9,13 @@ import { RiMenuLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import UserMenu from './UserMenu';
 import { usePathname } from 'next/navigation';
+import { IoMenuSharp } from "react-icons/io5";
 
 const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
     const [prevPosition, setPrevPosition] = useState(0);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement | null>(null);
     const userToggleButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -42,6 +44,11 @@ const Navbar = () => {
         setUserMenuOpen(pre => !pre);
     }
 
+    // mobile menu toggle handler
+    const mobileMenuToggler = () => {
+        setMobileMenuOpen(pre => !pre);
+    }
+
 
     // user menu outside click handler
     const handleClickOutside = (event: Event) => {
@@ -67,7 +74,32 @@ const Navbar = () => {
                         <Image width={126} src={logo} alt='Logo of barber voyage' />
                     </Link>
                 </div>
-                <div className='flex gap-5'>
+                {/* mobile menu dropdown button */}
+                <Button
+                    onClick={mobileMenuToggler}
+                    variant={mobileMenuOpen ? "primaryReverse" : "primary"}
+                    className={`rounded-full text-xl gap-2 md:hidden`}>
+                    <IoMenuSharp />
+                </Button>
+
+                <div className='hidden md:flex gap-5'>
+                    <NavLink href='/'>Home</NavLink>
+                    <NavLink href='/explore'>Explore</NavLink>
+                    <NavLink href='/about'>About</NavLink>
+
+                    {/* user menu dropdown button */}
+                    <Button
+                        ref={userToggleButtonRef}
+                        onClick={userMenuToggler}
+                        variant={userMenuOpen ? "primaryReverse" : "primary"}
+                        className={`rounded-full text-xl gap-2`}>
+                        <RiMenuLine /> <FaUserCircle />
+                    </Button>
+                </div>
+                <div className={`absolute right-0 top-20 bg-seconderyCol z-30 w-full py-3 px-3 flex flex-col md:hidden gap-2 duration-200 origin-left
+                                ${isScrolling ? "bg-seconderyCol" : "bg-textCol/80"} 
+                                ${mobileMenuOpen ? "scale-x-100" : "scale-x-0"}
+                                ${isScrolling || (prevPosition <= 250) ? "" : "-translate-y-full"}`}>
                     <NavLink href='/'>Home</NavLink>
                     <NavLink href='/explore'>Explore</NavLink>
                     <NavLink href='/about'>About</NavLink>
