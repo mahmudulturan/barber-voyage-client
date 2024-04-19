@@ -56,3 +56,10 @@ export interface IHostShopInputs {
     postal: string;
     services: string[];
 }
+
+export interface IBecomeBarberInputs {
+    user: string;
+    experience: string;
+    specialties: string[];
+    document: string;
+}
