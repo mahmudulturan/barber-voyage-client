@@ -10,6 +10,7 @@ import { FaUserCircle } from "react-icons/fa";
 import UserMenu from './UserMenu';
 import { usePathname } from 'next/navigation';
 import { IoMenuSharp } from "react-icons/io5";
+import MobileMenu from './MobileMenu';
 
 const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
@@ -82,6 +83,7 @@ const Navbar = () => {
                     <IoMenuSharp />
                 </Button>
 
+                {/* navlinks for larger devices start */}
                 <div className='hidden md:flex gap-5'>
                     <NavLink href='/'>Home</NavLink>
                     <NavLink href='/explore'>Explore</NavLink>
@@ -96,23 +98,12 @@ const Navbar = () => {
                         <RiMenuLine /> <FaUserCircle />
                     </Button>
                 </div>
-                <div className={`absolute right-0 top-20 bg-seconderyCol z-30 w-full py-3 px-3 flex flex-col md:hidden gap-2 duration-200 origin-left
-                                ${isScrolling ? "bg-seconderyCol" : "bg-textCol/80"} 
-                                ${mobileMenuOpen ? "scale-x-100" : "scale-x-0"}
-                                ${isScrolling || (prevPosition <= 250) ? "" : "-translate-y-full"}`}>
-                    <NavLink href='/'>Home</NavLink>
-                    <NavLink href='/explore'>Explore</NavLink>
-                    <NavLink href='/about'>About</NavLink>
+                {/* navlinks for larger devices end */}
 
-                    {/* user menu dropdown button */}
-                    <Button
-                        ref={userToggleButtonRef}
-                        onClick={userMenuToggler}
-                        variant={userMenuOpen ? "primaryReverse" : "primary"}
-                        className={`rounded-full text-xl gap-2`}>
-                        <RiMenuLine /> <FaUserCircle />
-                    </Button>
-                </div>
+                {/* mobile dropdown menu */}
+                <MobileMenu isScrolling={isScrolling} prevPosition={prevPosition} mobileMenuOpen={mobileMenuOpen} />
+
+                {/* user dropdown menu */}
                 <UserMenu isScrolling={isScrolling} userMenuRef={userMenuRef} prevPosition={prevPosition} userMenuOpen={userMenuOpen} />
             </div>
         </nav>
