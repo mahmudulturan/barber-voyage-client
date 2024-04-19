@@ -33,6 +33,7 @@ export interface shopData {
 }
 
 export interface IBarberRegisterInputs {
+    message: string;
     user: string;
     experience: string;
     specialties: string[];

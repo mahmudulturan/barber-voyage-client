@@ -5,10 +5,12 @@ import { barberSpecialties } from '@/constant/constant';
 import { imageUpload } from '@/lib/imageUpload';
 import { useRegisterBarberMutation } from '@/redux/api/barbersApi/barbersApi';
 import { RootState } from '@/redux/store';
-import { IBecomeBarberInputs } from '@/types/types';
+import { IBarberRegisterInputs, IBecomeBarberInputs } from '@/types/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { FaUpload } from "react-icons/fa6";
 import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
@@ -20,7 +22,9 @@ const BecomeBarberForm = () => {
     const [documentUrl, setDocumentUrl] = useState<string>();
     const [uploadLoading, setUploadLoading] = useState<boolean>();
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<IBecomeBarberInputs>()
+    const [becomeBarber, { isLoading: isBarberLoading }] = useRegisterBarberMutation();
 
+    const router = useRouter();
 
     // to delete selected specialties
     const handleSpecialitiesRemove = (removeSpeciality: string) => {
@@ -54,7 +58,20 @@ const BecomeBarberForm = () => {
         const reqBody = {
             document: "https://i.ibb.co/MZcR9by/43716.jpg", experience, specialties, user: userInfo?._id
         };
-        console.log(reqBody);
+        const dbResponsePromise = becomeBarber(reqBody).unwrap();
+        toast.promise(
+            dbResponsePromise,
+            {
+                loading: 'Registering...',
+                success: (data: IBarberRegisterInputs) => {
+                    const message = data.message || "Registration successful";
+                    router.push('/dashboard');
+                    reset();
+                    return message;
+                },
+                error: (err) => `${err?.data?.error || "Registration Failed"}`,
+            }
+        );
     }
 
     return (
