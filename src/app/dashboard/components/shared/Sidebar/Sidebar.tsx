@@ -11,6 +11,8 @@ import toast from 'react-hot-toast';
 import { removeUser } from '@/redux/slices/usersSlice/usersSlice';
 import { CiLogout } from "react-icons/ci";
 import MenuLinks from './MenuLinks';
+import { RxCross2 } from 'react-icons/rx';
+import { IoMenuSharp } from 'react-icons/io5';
 
 const Sidebar = () => {
     const user = useSelector((state: RootState) => state.usersSlice);
@@ -33,16 +35,30 @@ const Sidebar = () => {
         );
     }
     return (
-        <div className='fixed flex flex-col h-full w-full lg:w-80 px-3'>
-            <div className='flex items-center justify-center my-2'>
+        <div className='fixed lg:flex flex-col lg:h-full w-full lg:w-80 px-3 bg-seconderyCol'>
+            <div className='flex items-center justify-between my-2'>
                 <Link href={'/'} className='w-32'>
                     <Image width={126} src={logo} priority={true} alt='Logo of barber voyage' />
                 </Link>
+
+                {/* menu dropdown button for smaller devices */}
+                <Button
+                    variant={!0 ? "primaryReverse" : "primary"}
+                    className={`rounded-full lg:hidden text-2xl gap-2`}>
+                    <div className='transition-opacity duration-200'>
+                        {
+                            0 ?
+                                <RxCross2 />
+                                :
+                                <IoMenuSharp />
+                        }
+                    </div>
+                </Button>
             </div>
-            <div className='flex-1'>
+            <div className='flex-1 hidden lg:block'>
                 <MenuLinks />
             </div>
-            <div className='my-6'>
+            <div className='my-6 hidden lg:block'>
                 <Button
                     variant={"primary"}
                     className="w-full  gap-2"

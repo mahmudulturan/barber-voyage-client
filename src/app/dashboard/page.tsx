@@ -1,6 +1,6 @@
 const page = () => {
     return (
-        <div>
+        <div className="dashboard-page-wrapper">
             dashboard
         </div>
     );
