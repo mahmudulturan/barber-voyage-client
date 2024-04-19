@@ -44,7 +44,7 @@ const Sidebar = () => {
     }
     return (
         <div className='fixed lg:flex flex-col lg:h-full w-full lg:w-80 bg-seconderyCol'>
-            <div className='flex items-center justify-between my-2'>
+            <div className='flex items-center justify-between my-2 px-3'>
                 <Link href={'/'} className='w-32'>
                     <Image width={126} src={logo} priority={true} alt='Logo of barber voyage' />
                 </Link>
@@ -64,10 +64,10 @@ const Sidebar = () => {
                     </div>
                 </Button>
             </div>
-            <div className='flex-1 hidden lg:block'>
+            <div className='flex-1 hidden lg:block px-3'>
                 <MenuLinks />
             </div>
-            <div className='my-6 hidden lg:block'>
+            <div className='my-6 hidden lg:block px-3'>
                 <Button
                     variant={"primary"}
                     className="w-full  gap-2"
@@ -77,7 +77,7 @@ const Sidebar = () => {
                     Logout
                 </Button>
             </div>
-            <div>
+            <div className='lg:hidden'>
                 <MobileMenu isMenuOpen={isMenuOpen} />
             </div>
         </div>
