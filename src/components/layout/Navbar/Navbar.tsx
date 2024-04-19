@@ -19,6 +19,8 @@ const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement | null>(null);
     const userToggleButtonRef = useRef<HTMLButtonElement>(null);
+    const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+    const mobileToggleButtonRef = useRef<HTMLButtonElement>(null);
 
     const pathname = usePathname();
 
@@ -56,6 +58,9 @@ const Navbar = () => {
         if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && userToggleButtonRef.current && !userToggleButtonRef.current.contains(event.target as Node)) {
             setUserMenuOpen(false);
         }
+        if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node) && mobileToggleButtonRef.current && !mobileToggleButtonRef.current.contains(event.target as Node)) {
+            setMobileMenuOpen(false);
+        }
     };
 
     useEffect(() => {
@@ -75,13 +80,7 @@ const Navbar = () => {
                         <Image width={126} src={logo} alt='Logo of barber voyage' />
                     </Link>
                 </div>
-                {/* mobile menu dropdown button */}
-                <Button
-                    onClick={mobileMenuToggler}
-                    variant={mobileMenuOpen ? "primaryReverse" : "primary"}
-                    className={`rounded-full text-xl gap-2 md:hidden`}>
-                    <IoMenuSharp />
-                </Button>
+
 
                 {/* navlinks for larger devices start */}
                 <div className='hidden md:flex gap-5'>
@@ -100,8 +99,17 @@ const Navbar = () => {
                 </div>
                 {/* navlinks for larger devices end */}
 
+                {/* mobile menu dropdown button */}
+                <Button
+                    ref={mobileToggleButtonRef}
+                    onClick={mobileMenuToggler}
+                    variant={mobileMenuOpen ? "primaryReverse" : "primary"}
+                    className={`rounded-full md:hidden text-xl gap-2`}>
+                    <IoMenuSharp />
+                </Button>
+
                 {/* mobile dropdown menu */}
-                <MobileMenu isScrolling={isScrolling} prevPosition={prevPosition} mobileMenuOpen={mobileMenuOpen} />
+                <MobileMenu isScrolling={isScrolling} mobileMenuRef={mobileMenuRef} prevPosition={prevPosition} mobileMenuOpen={mobileMenuOpen} />
 
                 {/* user dropdown menu */}
                 <UserMenu isScrolling={isScrolling} userMenuRef={userMenuRef} prevPosition={prevPosition} userMenuOpen={userMenuOpen} />

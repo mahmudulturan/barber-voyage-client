@@ -6,15 +6,16 @@ import Link from 'next/link';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiLogOut  } from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 
 type mobileMenuProps = {
     isScrolling: boolean;
     prevPosition: number;
     mobileMenuOpen: boolean;
+    mobileMenuRef?: React.RefObject<HTMLDivElement>;
 }
 
-const MobileMenu = ({ isScrolling, prevPosition, mobileMenuOpen }: mobileMenuProps) => {
+const MobileMenu = ({ isScrolling, prevPosition, mobileMenuOpen, mobileMenuRef }: mobileMenuProps) => {
     const user = useSelector((state: RootState) => state.usersSlice);
     const [logoutUser, { isLoading: isLogoutLoading }] = useLazyLogOutUserQuery();
 
@@ -36,7 +37,9 @@ const MobileMenu = ({ isScrolling, prevPosition, mobileMenuOpen }: mobileMenuPro
         );
     }
     return (
-        <div className={`absolute right-0 top-[92px] bg-seconderyCol z-30 w-full py-3 px-3 flex flex-col md:hidden gap-2 duration-200 origin-left
+        <div
+            ref={mobileMenuRef}
+            className={`absolute right-0 top-[92px] bg-seconderyCol z-30 w-full py-3 px-3 flex flex-col md:hidden gap-2 duration-200 origin-left
         ${isScrolling ? "bg-seconderyCol" : "bg-textCol/80"} 
         ${mobileMenuOpen ? "scale-x-100" : "scale-x-0"}
         ${isScrolling || (prevPosition <= 250) ? "" : "-translate-y-full"}`}
