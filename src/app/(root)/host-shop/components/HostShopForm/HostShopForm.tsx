@@ -7,8 +7,10 @@ import { useCreateShopMutation } from '@/redux/api/ownersApi/ownersApi';
 import { RootState } from '@/redux/store';
 import { IHostShopInputs } from '@/types/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { FaUpload } from "react-icons/fa6";
 import { RxCross2 } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
@@ -22,6 +24,9 @@ const HostShopForm = () => {
     const [uploadLoading, setUploadLoading] = useState<boolean>();
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<IHostShopInputs>()
     const [hostShop, { isLoading: isHostLoading }] = useCreateShopMutation();
+
+    const router = useRouter();
+
 
     // to delete selected specialties
     const handleSpecialitiesRemove = (removeSpeciality: string) => {
@@ -71,8 +76,19 @@ const HostShopForm = () => {
             experience: experience,
             specialties
         }
-        const dbResponse = await hostShop(reqBody).unwrap();
-        console.log(dbResponse)
+        const dbResponsePromise = hostShop(reqBody).unwrap();
+        toast.promise(
+            dbResponsePromise,
+            {
+                loading: 'Registering...',
+                success: (data: { message: string }) => {
+                    router.push('/dashboard')
+                    reset();
+                    return `${data.message}`
+                },
+                error: (err) => `${err?.data?.error || "Registration Failed"}`,
+            }
+        );
     }
 
     return (
