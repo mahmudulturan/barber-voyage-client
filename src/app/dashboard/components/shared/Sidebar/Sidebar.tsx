@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '@/assets/images/logo/BarberVoyageLogo.png'
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,7 +17,14 @@ import { IoMenuSharp } from 'react-icons/io5';
 const Sidebar = () => {
     const user = useSelector((state: RootState) => state.usersSlice);
     const [logoutUser, { isLoading: isLogoutLoading }] = useLazyLogOutUserQuery();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dispatch = useDispatch();
+
+
+    // mobile menu toggle handler
+    const handleMenuToggler = () => {
+        setIsMenuOpen(pre => !pre);
+    }
 
     // handler for logout user
     const handleLogout = () => {
@@ -43,11 +50,12 @@ const Sidebar = () => {
 
                 {/* menu dropdown button for smaller devices */}
                 <Button
-                    variant={!0 ? "primaryReverse" : "primary"}
+                    onClick={handleMenuToggler}
+                    variant={isMenuOpen ? "primaryReverse" : "primary"}
                     className={`rounded-full lg:hidden text-2xl gap-2`}>
                     <div className='transition-opacity duration-200'>
                         {
-                            0 ?
+                            isMenuOpen ?
                                 <RxCross2 />
                                 :
                                 <IoMenuSharp />
