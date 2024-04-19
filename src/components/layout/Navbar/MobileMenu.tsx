@@ -36,7 +36,7 @@ const MobileMenu = ({ isScrolling, prevPosition, mobileMenuOpen }: mobileMenuPro
         );
     }
     return (
-        <div className={`absolute right-0 top-20 bg-seconderyCol z-30 w-full py-3 px-3 flex flex-col md:hidden gap-2 duration-200 origin-left
+        <div className={`absolute right-0 top-[92px] bg-seconderyCol z-30 w-full py-3 px-3 flex flex-col md:hidden gap-2 duration-200 origin-left
         ${isScrolling ? "bg-seconderyCol" : "bg-textCol/80"} 
         ${mobileMenuOpen ? "scale-x-100" : "scale-x-0"}
         ${isScrolling || (prevPosition <= 250) ? "" : "-translate-y-full"}`}

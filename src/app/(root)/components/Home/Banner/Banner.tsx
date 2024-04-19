@@ -16,7 +16,7 @@ const Banner = () => {
                 backgroundRepeat: "no-repeat", backgroundSize: "cover"
             }}>
             <div className='h-full w-full min-h-screen bg-seconderyCol/60 flex items-center justify-end'>
-                <div className='wrapper w-full flex justify-end'>
+                <div className='wrapper w-full flex justify-end mt-[12px]'>
                     <SearchForm />
                 </div>
 
