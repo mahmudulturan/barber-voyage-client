@@ -11,6 +11,7 @@ import UserMenu from './UserMenu';
 import { usePathname } from 'next/navigation';
 import { IoMenuSharp } from "react-icons/io5";
 import MobileMenu from './MobileMenu';
+import { RxCross2 } from 'react-icons/rx';
 
 const Navbar = () => {
     const [isScrolling, setIsScrolling] = useState(false);
@@ -104,8 +105,15 @@ const Navbar = () => {
                     ref={mobileToggleButtonRef}
                     onClick={mobileMenuToggler}
                     variant={mobileMenuOpen ? "primaryReverse" : "primary"}
-                    className={`rounded-full md:hidden text-xl gap-2`}>
-                    <IoMenuSharp />
+                    className={`rounded-full md:hidden text-2xl gap-2`}>
+                    <div className='transition-opacity duration-200'>
+                        {
+                            mobileMenuOpen ?
+                                <RxCross2 />
+                                :
+                                <IoMenuSharp />
+                        }
+                    </div>
                 </Button>
 
                 {/* mobile dropdown menu */}
