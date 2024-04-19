@@ -60,7 +60,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`fixed w-full z-40 mb-24 duration-300 ${isScrolling || pathname !== '/' ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
+        <nav className={`sticky top-0 w-full z-40 duration-300 ${isScrolling || pathname !== '/' ? "bg-seconderyCol" : "bg-transparent"} ${isScrolling || (prevPosition <= 250) ? "" : " -translate-y-full"}`}>
             <div className='wrapper flex items-center justify-between py-4 relative'>
                 <div>
                     <Link href={'/'} className='w-32'>

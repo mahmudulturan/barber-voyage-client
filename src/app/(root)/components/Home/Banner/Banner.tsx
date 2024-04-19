@@ -10,7 +10,7 @@ import SearchForm from './SearchForm';
 const Banner = () => {
 
     return (
-        <div className='min-h-screen'
+        <div className='min-h-screen -mt-[92px]'
             style={{
                 backgroundImage: `url(https://i.ibb.co/NxrLWN6/banner-Image-3.jpg)`,
                 backgroundRepeat: "no-repeat", backgroundSize: "cover"

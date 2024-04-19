@@ -8,7 +8,7 @@
     }
 
     .page-wrapper {
-        @apply max-w-7xl mx-auto px-2 lg:px-0 pt-[92px]
+        @apply max-w-7xl mx-auto px-2 lg:px-0
     }
 }
 
